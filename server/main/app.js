@@ -37,9 +37,4 @@ require('../battle/battle_routes.js')(BattleRouter);
 require('../pastSolo/past_solo_routes.js')(PastSoloRouter);
 require('../pastGroup/past_group_routes.js')(PastGroupRouter);
 
-
-require('../jawbone/jawbone.js')(app, passport);
-
-require('../jawbone/jawbone.js')(app, passport);
-
 module.exports = exports = app;

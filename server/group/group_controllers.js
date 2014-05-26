@@ -1,7 +1,7 @@
 'use strict'
 
 var Group = require('./group_model.js');
-var Q     = require('Q');
+var Q     = require('q');
 
 module.exports = exports = {
   get : function(req, res, next) {

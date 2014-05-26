@@ -1,7 +1,7 @@
 'use strict'
 
 var Solo = require('./solo_model');
-var Q = require('Q');
+var Q = require('q');
 
 module.exports = exports = {
   get : function (req, res, next) {

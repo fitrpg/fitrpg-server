@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /*
  * MiddleWare for the entire app
