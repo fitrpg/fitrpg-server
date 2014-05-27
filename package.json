@@ -16,6 +16,7 @@
     "mongoose": "*",
     "morgan": "*",
     "passport": "^0.2.0",
+    "passport-oauth": "*",
     "q": "*",
     "request": "^2.35.0"
   }
