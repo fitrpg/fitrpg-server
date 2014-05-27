@@ -14,7 +14,6 @@ module.exports = exports = function(router, passport) {
   });
 
   passport.use(controller.fitbitStrategy);
-
   router.use('/auth', passport.authenticate('fitbit'));
   router.use('/authcallback', controller.getOauthToken);
 };
