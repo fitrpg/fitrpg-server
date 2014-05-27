@@ -6,20 +6,24 @@ var bodyParser    = require('body-parser'),
     mongoose      = require('mongoose'),
     morgan        = require('morgan'),
     methodOverride= require('method-override'),
-    passport      = require('passport'),
     session       = require('express-session');
 
 mongoose.connect(process.env.DB_URL || 'mongodb://localhost/myApp');
 /*
  * Include all your global env variables here.
 */
-module.exports = exports = function (app, express, routers) {
+module.exports = exports = function (app, express,passport, routers) {
   app.set('port', process.env.PORT || 9000);
   app.set('base url', process.env.URL || 'http://localhost');
   app.use(cookieParser());
   app.use(morgan('dev'));
   app.use(bodyParser());
   app.use(middle.cors);
+  app.use(session({secret: 'amiraconormatt', maxAge: 360*5}));
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.use('/fitbit', routers.FitbitRouter);
+  app.use('/jawbone', routers.JawboneRouter);
   app.use('/note' , routers.NoteRouter);
   app.use('/user' , routers.UserRouter);
   app.use('/solo' , routers.SoloRouter);
@@ -38,7 +42,4 @@ module.exports = exports = function (app, express, routers) {
    * must be used BEFORE passport.session() to ensure that the login is
    * restored in the correct order.
    */
-  app.use(session({secret: 'amiraconormatt', maxAge: 360*5}));
-  app.use(passport.initialize());
-  app.use(passport.session());
 };
