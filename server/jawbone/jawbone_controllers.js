@@ -27,7 +27,6 @@ module.exports = exports = {
     request.get(url, function (err,thing,jsonObj) {
       if (err) { res.send(err)}
         jsonObj = JSON.parse(jsonObj);
-        console.log('')
         console.log(jsonObj);
         var access_token = jsonObj['access_token']; //refresh token?
         // with this token we can get the user profile and if it exists, we'll get it, if not, we'll make it
@@ -37,8 +36,9 @@ module.exports = exports = {
           user.avatar = profile.image;
           user.displayName = profile.first + profile.last;
           user.provider =  profile.provider;
+          console.log('THIS IS THE USER TEST', user);
           var newUrl = '/jawbonetoken?token=' + access_token + '&userid=' + user.xid;
-          res.redirect(newUrl);
+          res.redirect(newUrl); //this url will never actually go anywhere, we are just sending it back to the client
         });
     });
   }
