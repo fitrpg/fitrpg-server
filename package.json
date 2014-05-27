@@ -2,22 +2,22 @@
   "name": "ionic-project",
   "version": "1.0.0",
   "description": "An Ionic project",
-  "scripts" :{
+  "scripts": {
     "predeploy": "npm install",
-    "start" : "node server/server.js"
+    "start": "node server/server.js"
   },
   "dependencies": {
     "body-parser": "*",
     "cookie-parser": "^1.1.0",
     "express": "*",
     "express-session": "^1.2.0",
-    "method-override": "^1.0.1",
     "jawbone-up": "^0.1.1",
+    "method-override": "^1.0.1",
     "mongoose": "*",
     "morgan": "*",
     "passport": "^0.2.0",
     "passport-oauth": "*",
     "q": "*",
-    "request": "^2.35.0"
+    "request": "^2.36.0"
   }
 }
