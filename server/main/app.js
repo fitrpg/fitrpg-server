@@ -37,7 +37,7 @@ require('../item/item_routes.js')(ItemRouter);
 require('../battle/battle_routes.js')(BattleRouter);
 require('../pastSolo/past_solo_routes.js')(PastSoloRouter);
 require('../pastGroup/past_group_routes.js')(PastGroupRouter);
-require('../fitbit/fitbit_routes.js')(FitbitRouter, passport);
-//require('../jawbone/jawbone_routes.js')(JawboneRouter, passport);
+require('../fitbit/fitbit_routes.js')(FitbitRouter, passport); // investigate how to not to pass in passport twice
+require('../jawbone/jawbone_routes.js')(JawboneRouter, passport);
 
 module.exports = exports = app;

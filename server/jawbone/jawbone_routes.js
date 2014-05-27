@@ -1,5 +1,6 @@
 'use strict'
-var controller = require('./fitbit_controllers.js');
+
+var controller = require('./jawbone_controllers.js');
 
 module.exports = exports = function(router, passport) {
   passport.serializeUser(function (user, done) {
@@ -12,7 +13,7 @@ module.exports = exports = function(router, passport) {
     });
   });
 
-  passport.use(controller.fitbitStrategy);
-  router.use('/auth', passport.authenticate('fitbit'));
+  passport.use(controller.jawboneStrategy);
+  router.use('/auth', passport.authenticate('jawbone'));
   router.use('/authcallback', controller.getOauthToken);
 };
