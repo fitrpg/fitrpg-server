@@ -27,7 +27,9 @@ module.exports = exports = {
     request.get(url, function (err,thing,jsonObj) {
       if (err) { res.send(err)}
         jsonObj = JSON.parse(jsonObj);
-        access_token = jsonObj['access_token']; //refresh token?
+        console.log('')
+        console.log(jsonObj);
+        var access_token = jsonObj['access_token']; //refresh token?
         // with this token we can get the user profile and if it exists, we'll get it, if not, we'll make it
         var user =  {};
         exports.jawboneStrategy.getUserProfile(access_token, function(profile) { //async!
