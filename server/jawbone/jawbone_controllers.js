@@ -1,5 +1,6 @@
 'use strict';
 
+var request = require('request');
 var User = require('../user/user_model.js');
 var JawboneStrategy = require('./jawbone-passport.js');
 
