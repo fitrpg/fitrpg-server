@@ -15,5 +15,5 @@ module.exports = exports = function(router, passport) {
 
   passport.use(controller.jawboneStrategy);
   router.use('/auth', passport.authenticate('jawbone'));
-  router.use('/authcallback', controller.getOauthToken);
+  router.use('/authcallback', controller.getAccessToken);
 };
