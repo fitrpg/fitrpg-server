@@ -12,7 +12,7 @@ module.exports = exports = function(router, passport) {
     });
   });
 
-  router.route('/push')
+  router.route('/push') //fitbit will ping this with subscriber info, when a user's info is synced
     .post(controller.pushNotification);
 
   passport.use(controller.fitbitStrategy);

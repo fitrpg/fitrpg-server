@@ -65,8 +65,9 @@ module.exports = exports = {
       User.findById(id,function(err,user) {
         if (err) {throw err}
         var profile = JSON.parse(results[0]);
-        user.avatar = profile.user.avatar;
+        user.profile.avatar = profile.user.avatar;
         user.provider = 'fitbit';
+        user.profile.displayName = profile.user.displayName;
         user.save();
       });
     });
