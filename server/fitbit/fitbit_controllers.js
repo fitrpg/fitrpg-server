@@ -46,6 +46,17 @@ module.exports = exports = {
     res.send(200,JSON.stringify({'End':[]})); //this should never be viewed by the user, just ending the res, change to res.end later
   },
 
+  subscribeUser: function(fitbitToken,fitbitSecret,id) { //subscribe this user so we get push notifications
+    var client = new FitbitApiClient(FITBIT_CONSUMER_KEY,FITBIT_CONSUMER_SECRET);
+    client.requestResource("/apiSubscriptions/"+id+".json", "POST", fitbitToken, fitbitSecret);
+  },
+
+  pushNotification: function(req,res,next) {
+    console.log(JSON.stringify(req.body)); // this should have our subscriber data, do something with it, ie save to db that update is needed
+    res.set('Content-Type', 'application/json');
+    res.send(204);
+  },
+
   getAllData: function(fitbitToken,fitbitSecret,id,date) {
     var client = new FitbitApiClient(FITBIT_CONSUMER_KEY,FITBIT_CONSUMER_SECRET); 
     date = date.yyyymmdd();

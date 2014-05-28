@@ -12,9 +12,13 @@ module.exports = exports = function(router, passport) {
     });
   });
 
+  router.route('/push')
+    .post(controller.pushNotification);
+
   passport.use(controller.fitbitStrategy);
   router.use('/auth', passport.authenticate('fitbit'));
   // for fitbit it's a twp step process and we have to do passport auth twice
   router.use('/authcallback', passport.authenticate('fitbit')); 
   router.use('/authcallback', controller.getOauthToken);
+
 };
