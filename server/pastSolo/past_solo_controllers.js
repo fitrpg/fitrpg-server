@@ -5,8 +5,8 @@ var Q = require('q');
 
 module.exports = exports = {
   get : function (req, res, next) {
-    $promise = Q.nbind(PastSolo.findById, PastSolo);
-    $promise(req.param('id'))
+    var $promise = Q.nbind(PastSolo.findById, PastSolo);
+    $promise(req.params.id)
       .then(function (pastSolo) {
         res.json(pastSolo);
       })
@@ -15,7 +15,7 @@ module.exports = exports = {
       })
   },
   getPastSolos : function (req, res, next) {
-    $promise = Q.nbind(PastSolo.find, PastSolo);
+    var $promise = Q.nbind(PastSolo.find, PastSolo);
     $promise()
       .then(function (pastSolos) {
         res.json(pastSolos);
@@ -25,10 +25,9 @@ module.exports = exports = {
       })
   },
   post : function (req, res, next) {
-    var pastSolo = req.body.pastSolo;
     var $promise = Q.nbind(PastSolo.create, PastSolo);
-    $promise(pastSolo)
-      .then(function(id){
+    $promise(req.body.pastSolo)
+      .then(function (id) {
         res.send(id);
       })
       .fail(function (reason) {

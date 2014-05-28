@@ -6,9 +6,9 @@ var Q     = require('q');
 module.exports = exports = {
   get : function(req, res, next) {
     var $promise = Q.nbind(Item.findById, Item);
-    $promise(req.param('id'))
-      .then(function (itrm) {
-        res.json(itrm);
+    $promise(req.params.id)
+      .then(function (item) {
+        res.json(item);
       })
       .fail(function (reason) {
         next(reason);
@@ -17,8 +17,8 @@ module.exports = exports = {
   getItems : function(req, res, next) {
     var $promise = Q.nbind(Item.find, Item);
     $promise()
-      .then(function (groups) {
-        res.json(groups);
+      .then(function (items) {
+        res.json(items);
       })
       .fail(function (reason){
         next(reason);
