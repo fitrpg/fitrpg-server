@@ -3,15 +3,8 @@
 var controller = require('./jawbone_controllers.js');
 
 module.exports = exports = function(router, passport) {
-  passport.serializeUser(function (user, done) {
-    done(null, user.originalId);
-  });
-
-  passport.deserializeUser(function (id, done) {
-    User.findOne({originalId: id}, function (err, user) {
-      done(err, user);
-    });
-  });
+  //we do not serialize for passport again here as we
+  //already did it once for fitbit, and it is the same passport
 
   passport.use(controller.jawboneStrategy);
   router.use('/auth', passport.authenticate('jawbone'));

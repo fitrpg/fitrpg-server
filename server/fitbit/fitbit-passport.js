@@ -74,24 +74,23 @@ util.inherits(Strategy, OAuthStrategy);
 Strategy.prototype.userProfile = function(token, tokenSecret, params, done) {
   this._oauth.get('https://api.fitbit.com/1/user/-/profile.json', token, tokenSecret, function (err, body, res) {
     if (err) { return done(new InternalOAuthError('failed to fetch user profile', err)); }
-
+    
     try {
       var json = JSON.parse(body);
-
+      
       var profile = { provider: 'fitbit' };
       profile.id = json.user.encodedId;
       profile.displayName = json.user.displayName;
-
+      
       profile._raw = body;
       profile._json = json;
-
+      
       done(null, profile);
     } catch(e) {
       done(e);
     }
   });
 }
-
 
 /**
  * Expose `Strategy`.

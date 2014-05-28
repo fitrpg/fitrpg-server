@@ -4,12 +4,14 @@ var mongoose = require('mongoose');
 
 var UserSchema = new mongoose.Schema({
   _id : String,
+  accessToken: String,
+  accessTokenSecret: String,
   attributes : {
     gold : Number,
     experience : Number,
     vitality : Number,
     strength : Number,
-    enduarance : Number,
+    endurance : Number,
     dexterity : Number
   },
   character : String,
