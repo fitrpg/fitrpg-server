@@ -6,7 +6,7 @@ var Q     = require('q');
 module.exports = exports = {
   get : function(req, res, next) {
     var $promise = Q.nbind(PastGroup.findById, PastGroup);
-    $promise(req.param('id'))
+    $promise(req.params.id)
       .then(function (pastGroup) {
         res.json(pastGroup);
       })
