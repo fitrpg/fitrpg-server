@@ -7,6 +7,6 @@ module.exports = exports = function (router) {
     .get(controller.getUsers)
     .post(controller.post);
 
-  router.route('/id/')
-    .get(controller.get)
+  router.route('/:id')
+    .get(controller.get);
 };

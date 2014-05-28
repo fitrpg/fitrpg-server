@@ -5,8 +5,8 @@ var Q = require('q');
 
 module.exports = exports = {
   get : function (req, res, next) {
-    $promise = Q.nbind(Solo.findById, Solo);
-    $promise(req.param('id'))
+    var $promise = Q.nbind(Solo.findById, Solo);
+    $promise(req.params.id)
       .then(function (solo) {
         res.json(solo);
       })
@@ -15,7 +15,7 @@ module.exports = exports = {
       })
   },
   getSolos : function (req, res, next) {
-    $promise = Q.nbind(Solo.find, Solo);
+    var $promise = Q.nbind(Solo.find, Solo);
     $promise()
       .then(function (solos) {
         res.json(solos);
@@ -25,10 +25,9 @@ module.exports = exports = {
       })
   },
   post : function (req, res, next) {
-    var solo = req.body.solo;
     var $promise = Q.nbind(Solo.create, Solo);
-    $promise(solo)
-      .then(function(id){
+    $promise(req.body.solo)
+      .then(function (id) {
         res.send(id);
       })
       .fail(function (reason) {
