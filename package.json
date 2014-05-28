@@ -11,6 +11,7 @@
     "cookie-parser": "^1.1.0",
     "express": "*",
     "express-session": "^1.2.0",
+    "fitbit-node": "^0.1.0",
     "jawbone-up": "^0.1.1",
     "method-override": "^1.0.1",
     "mongoose": "^3.8.11",
