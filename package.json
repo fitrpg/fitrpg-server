@@ -13,11 +13,12 @@
     "express-session": "^1.2.0",
     "jawbone-up": "^0.1.1",
     "method-override": "^1.0.1",
-    "mongoose": "*",
+    "mongoose": "^3.8.11",
     "morgan": "*",
+    "oauth": "^0.9.12",
     "passport": "^0.2.0",
     "passport-oauth": "*",
-    "q": "*",
+    "q": "^1.0.1",
     "request": "^2.36.0"
   }
 }
