@@ -33,5 +33,15 @@ module.exports = exports = {
       .fail(function (reason) {
         next(reason);
       });
+  },
+  put : function (req, res, next) {
+    var $promise = Q.nbind(User.update, User);
+    $promise({ _id : req.body._id}, req.body.user)
+      .then(function (numberaffected) {
+        res.send(numberaffected);
+      })
+      .fail(function (reason) {
+        next(reason);
+      });
   }
 };
