@@ -26,7 +26,7 @@ module.exports = exports = {
   },
   post : function (req, res, next) {
     var $promise = Q.nbind(User.create, User);
-    $promise(req.body.user)
+    $promise(req.body)
       .then(function (id) {
         res.send(id);
       })
@@ -35,8 +35,11 @@ module.exports = exports = {
       });
   },
   put : function (req, res, next) {
+    var id = req.body._id;
+    // not allowed update the _id
+    delete req.body._id;
     var $promise = Q.nbind(User.update, User);
-    $promise({ _id : req.body._id}, req.body.user)
+    $promise({ _id : id}, req.body)
       .then(function (numberaffected) {
         res.send(numberaffected);
       })
