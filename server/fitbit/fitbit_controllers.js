@@ -86,8 +86,6 @@ module.exports = exports = {
 
     form.on('close', function(){
       console.log('done');
-      console.log('me',req.files.updates.path);
-      console.log('test',JSON.parse(req.files.updates.path));
       res.set('Content-Type', 'application/json');
       res.send(204);
     });
@@ -102,7 +100,6 @@ module.exports = exports = {
     form.parse(req);
 
 
-});
 
     // var form = new formidable.IncomingForm(),
     //     files = [],
