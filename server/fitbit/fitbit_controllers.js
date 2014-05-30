@@ -75,6 +75,15 @@ module.exports = exports = {
     var form = new multiparty.Form();
 
     form.on('error', next);
+
+    form.on('part', function(part) {
+      console.log("PART XYX", part);
+    });
+
+    form.on('file', function(part, file) {
+      console.log("FILE YXY", part, file);
+    });
+
     form.on('close', function(){
       console.log('done');
       console.log('me',req.files.updates.path);
@@ -85,6 +94,7 @@ module.exports = exports = {
 
     // listen on field event for title
     form.on('field', function(name, val){
+      console.log("KV::: ", name, val);
       if (name !== 'title') return;
       title = val;
     });
@@ -92,7 +102,7 @@ module.exports = exports = {
     form.parse(req);
 
 
-
+});
 
     // var form = new formidable.IncomingForm(),
     //     files = [],
