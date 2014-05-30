@@ -6,27 +6,33 @@ var UserSchema = new mongoose.Schema({
   _id : String,
   accessToken: String,
   accessTokenSecret: String,
+  lastChecked: Date, // the last time we pulled data from fitbit or jawbone
+  needsUpdate: {type: Boolean, default: false},
+  // game specific attributes, independent of fitbit
   attributes : {
-    gold : Number,
-    experience : Number,
-    vitality : Number,
-    strength : Number,
-    endurance : Number,
-    dexterity : Number
+    gold : {type: Number, default: 0},
+    experience : {type: Number, default: 0},
+    vitality : {type: Number, default: 20},
+    strength : {type: Number, default: 20},
+    endurance : {type: Number, default: 20},
+    dexterity : {type: Number, default: 20},
+    level: {type: Number, default: 0},
+    skillPts: {type: Number, default: 0}
   },
   character : String,
   createdAt : Date,
+  // fitbit and jawbone specific, calculated from data
   fitbit : {
-    steps : Number,
-    sleep : Number,
-    sleepQuality : String,
-    veryActiveMinutes : Number,
-    inactiveMinutes : Number,
-    workOutLog : []
+    endurance: {type: Number, default: 0},
+    vitality: {type: Number, default: 0},
+    attackBonus: {type: Number, default: 0},
+    dexterity: {type: Number, default: 0},
+    HPRecov: {type: Number, default:0}
   },
   jawbone : {
     steps : Number,
     sleep : Number,
+    distance: Number,
     sleepQuality : String,
     veryActiveMinutes : Number,
     inactiveMinutes : Number,
@@ -34,7 +40,6 @@ var UserSchema = new mongoose.Schema({
   },
   friends: [],
   inventory: [],
-  equipped: [],
   lastActive : Date,
   missionsVersus : [],
   missionsSolo : [],
@@ -43,7 +48,7 @@ var UserSchema = new mongoose.Schema({
     avatar : String
   },
   provider : String,
-  username: String,
+  username: String
 
 });
 
