@@ -3,7 +3,7 @@
 var bodyParser    = require('body-parser'),
     cookieParser  = require('cookie-parser'),
     middle        = require('./middleware'),
-    mongoose      = require('mongoose-q')(),
+    mongoose      = require('mongoose-q')(), //mongoose-q then requires mongoose
     morgan        = require('morgan'),
     methodOverride= require('method-override'),
     session       = require('express-session');

@@ -65,67 +65,33 @@ module.exports = exports = {
 
   pushNotification: function(req,res,next) {
     console.log('Receives push notification.');
-    // parse a file upload
-    // var form = new formidable.IncomingForm();
-    // form.parse(req, function(err, fields, files) {
+    res.set('Content-Type', 'application/json');
+    res.send(204);
+
+    // work on this later to read fitbit subscription stuff
+    // var form = new multiparty.Form();
+
+    // form.on('error', next);
+
+    // form.on('part', function(part) {
+    //   console.log("PART XYX", part);
+    //   //console.log(part.read());
+    //   part.on('data', function(chunk) {
+    //     console.log('got %d bytes of data, bitches.', chunk.length, chunk);
+    //   });
+    // });
+
+    // // form.on('file', function(part, file) {
+    // //   console.log("FILE YXY", part, file);
+    // // });
+
+    // form.on('close', function(){
+    //   console.log('done');
     //   res.set('Content-Type', 'application/json');
     //   res.send(204);
     // });
 
-    var form = new multiparty.Form();
-
-    form.on('error', next);
-
-    form.on('part', function(part) {
-      console.log("PART XYX", part);
-      //console.log(part.read());
-      part.on('data', function(chunk) {
-        console.log('got %d bytes of data, bitches.', chunk.length, chunk);
-      });
-    });
-
-    // form.on('file', function(part, file) {
-    //   console.log("FILE YXY", part, file);
-    // });
-
-    form.on('close', function(){
-      console.log('done');
-      res.set('Content-Type', 'application/json');
-      res.send(204);
-    });
-
-    // listen on field event for title
-    // form.on('field', function(name, val){
-    //   console.log("KV::: ", name, val);
-    //   if (name !== 'title') return;
-    //   title = val;
-    // });
-
-    form.parse(req);
-
-
-
-    // var form = new formidable.IncomingForm(),
-    //     files = [],
-    //     fields = [];
-
-    // form
-    //   .on('field', function(field, value) {
-    //     console.log(field, value);
-    //     fields.push([field, value]);
-    //   })
-    //   .on('file', function(field, file) {
-    //     console.log(field, file);
-    //     files.push([field, file]);
-    //   })
-    //   .on('end', function() {
-    //     console.log('-> upload done');
-    //     console.log('received fields:\n\n '+util.inspect(fields));
-    //     res.set('Content-Type', 'application/json');
-    //     res.send(204);
-    //   });
     // form.parse(req);
-    
   },
 
   getAllData: function(fitbitToken,fitbitSecret,id,date) {
