@@ -78,7 +78,10 @@ module.exports = exports = {
 
     form.on('part', function(part) {
       console.log("PART XYX", part);
-      console.log(part.read());
+      //console.log(part.read());
+      part.on('data', function(chunk) {
+        console.log('got %d bytes of data, bitches.', chunk.length, chunk);
+      });
     });
 
     // form.on('file', function(part, file) {
