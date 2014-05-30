@@ -11,7 +11,7 @@ var GroupSchema = new mongoose.Schema({
    experience : Number,
    vitality : Number,
    strength : Number,
-   enduarance : Number,
+   endurance : Number,
    dexterity : Number
  },
  bet : Number
