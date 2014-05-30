@@ -34,6 +34,7 @@ var UserSchema = new mongoose.Schema({
   },
   friends: [],
   inventory: [],
+  equipped: [],
   lastActive : Date,
   missionsVersus : [],
   missionsSolo : [],
