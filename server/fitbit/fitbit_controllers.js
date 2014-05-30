@@ -103,9 +103,12 @@ module.exports = exports = {
 
   getAllData: function(id,cb) {
     var client = new FitbitApiClient(FITBIT_CONSUMER_KEY,FITBIT_CONSUMER_SECRET); 
+    var dateCreated;
     User.findByIdQ({_id: id})
       .then(function(user) {
-        var dateCreated = user.createdAt.yyyymmdd();
+        console.log('user',user);
+        dateCreated = user.createdAt.yyyymmdd();
+        console.log('datecreated',dateCreated);
         user.lastActive = user.lastActive || new Date();
         // GET PROFILE DATA
         return client.requestResource('/profile.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
