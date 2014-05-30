@@ -189,11 +189,11 @@ module.exports = exports = {
               strength += utils.calcStrDex(JSON.parse(results[i][0])['activities']);
             }
             user.fitbit.dexterity = user.fitbit.dexterity + strength;
+            user.lastChecked = new Date(); //this importantly sets our last checked variable
             return user;
           });
       })
       .then(function(user) {
-        user.lastChecked = new Date(); //this importantly sets our last checked variable
         return saveInPromise(user);
       })
       .fail(function(err) {
