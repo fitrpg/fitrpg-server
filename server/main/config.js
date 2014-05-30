@@ -3,12 +3,12 @@
 var bodyParser    = require('body-parser'),
     cookieParser  = require('cookie-parser'),
     middle        = require('./middleware'),
-    mongoose      = require('mongoose'),
+    mongoose      = require('mongoose-q')(),
     morgan        = require('morgan'),
     methodOverride= require('method-override'),
     session       = require('express-session');
 
-mongoose.connect(process.env.DB_URL || 'mongodb://localhost/myApp');
+mongoose.connect(process.env.DB_URL || 'mongodb://localhost/fitApp');
 /*
  * Include all your global env variables here.
 */
