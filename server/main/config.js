@@ -15,6 +15,10 @@ mongoose.connect(process.env.DB_URL || 'mongodb://localhost/fitApp');
 module.exports = exports = function (app, express,passport, routers) {
   app.set('port', process.env.PORT || 9000);
   app.set('base url', process.env.URL || 'http://127.0.0.1');
+  
+  //app.use(cookieParser());
+  //app.use(morgan('dev'));
+  app.use(bodyParser());
   app.post('/fitbit/push', function(req,res) {
     console.log('makes it here!!');
     console.log(req);
@@ -23,9 +27,6 @@ module.exports = exports = function (app, express,passport, routers) {
     res.set('Content-Type', 'application/json');
     res.send(204);
   });
-  app.use(cookieParser());
-  //app.use(morgan('dev'));
-  app.use(bodyParser());
   //app.use(middle.cors);
   // app.use(session({secret: 'amiraconormatt', maxAge: 360*5}));
   // app.use(passport.initialize());
