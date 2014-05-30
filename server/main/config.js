@@ -16,33 +16,33 @@ module.exports = exports = function (app, express,passport, routers) {
   app.set('port', process.env.PORT || 9000);
   app.set('base url', process.env.URL || 'http://127.0.0.1');
   app.post('/fitbit/push', function(req,res) {
-    console.log('makes it here');
+    console.log('makes it here!!');
     console.log(req);
     console.log(req.headers["content-length"]);
     console.log(req.body);
     res.set('Content-Type', 'application/json');
     res.send(204);
   });
-  //app.use(cookieParser());
-  app.use(morgan('dev'));
-  //app.use(bodyParser());
+  app.use(cookieParser());
+  //app.use(morgan('dev'));
+  app.use(bodyParser());
   //app.use(middle.cors);
-  app.use(session({secret: 'amiraconormatt', maxAge: 360*5}));
-  app.use(passport.initialize());
-  app.use(passport.session());
-  app.use('/fitbit', routers.FitbitRouter);
-  app.use('/jawbone', routers.JawboneRouter);
-  app.use('/notes' , routers.NoteRouter);
-  app.use('/users' , routers.UserRouter);
-  app.use('/solos' , routers.SoloRouter);
-  app.use('/groups', routers.GroupRouter);
-  app.use('/pastsolos' , routers.PastSoloRouter);
-  app.use('/pastgroups', routers.PastGroupRouter);
-  app.use('/items', routers.ItemRouter);
-  app.use('/battles', routers.BattleRouter);
-  app.use(middle.logError);
-  app.use(middle.handleError);
-  app.use(methodOverride());
+  // app.use(session({secret: 'amiraconormatt', maxAge: 360*5}));
+  // app.use(passport.initialize());
+  // app.use(passport.session());
+  // app.use('/fitbit', routers.FitbitRouter);
+  // app.use('/jawbone', routers.JawboneRouter);
+  // app.use('/notes' , routers.NoteRouter);
+  // app.use('/users' , routers.UserRouter);
+  // app.use('/solos' , routers.SoloRouter);
+  // app.use('/groups', routers.GroupRouter);
+  // app.use('/pastsolos' , routers.PastSoloRouter);
+  // app.use('/pastgroups', routers.PastGroupRouter);
+  // app.use('/items', routers.ItemRouter);
+  // app.use('/battles', routers.BattleRouter);
+  // app.use(middle.logError);
+  // app.use(middle.handleError);
+  // app.use(methodOverride());
   /*
    * passport.initialize() middleware is required to initialize Passport.
    * Because this application uses persistent login sessions, passport.session()
