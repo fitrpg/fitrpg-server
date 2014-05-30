@@ -6,6 +6,10 @@ var FitbitApiClient = require('fitbit-node');
 var utils = require('./fitbit_utility.js').util;
 var Q = require("q");
 
+// For processing Fitbit's push notification in the format of multipart/form (not bodyparsed :\)
+var formidable = require('formidable');
+var util = require('util');
+
 var mongoose = require('mongoose');
 
 var FITBIT_CONSUMER_KEY = '8cda22173ee44a5bba066322ccd5ed34';
@@ -60,11 +64,36 @@ module.exports = exports = {
   },
 
   pushNotification: function(req,res,next) {
-    console.log('gets herllle');
-    console.log(req);
-    console.log(req.body);
-    res.set('Content-Type', 'application/json');
-    res.send(204);
+    console.log('Receives push notification.');
+    // parse a file upload
+    // var form = new formidable.IncomingForm();
+    // form.parse(req, function(err, fields, files) {
+    //   res.set('Content-Type', 'application/json');
+    //   res.send(204);
+    // });
+
+  
+    var form = new formidable.IncomingForm(),
+        files = [],
+        fields = [];
+
+    form
+      .on('field', function(field, value) {
+        console.log(field, value);
+        fields.push([field, value]);
+      })
+      .on('file', function(field, file) {
+        console.log(field, file);
+        files.push([field, file]);
+      })
+      .on('end', function() {
+        console.log('-> upload done');
+        console.log('received fields:\n\n '+util.inspect(fields));
+        res.set('Content-Type', 'application/json');
+        res.send(204);
+      });
+    form.parse(req);
+    
   },
 
   getAllData: function(fitbitToken,fitbitSecret,id,date) {

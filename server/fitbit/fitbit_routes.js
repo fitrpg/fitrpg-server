@@ -13,7 +13,8 @@ module.exports = exports = function(router, passport) {
     });
   });
 
-  router.post('/push', controller.pushNotification);
+  router.route('/push')
+    .post(controller.pushNotification);
 
   passport.use(controller.fitbitStrategy);
   router.use('/auth', passport.authenticate('fitbit'));
