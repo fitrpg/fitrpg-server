@@ -16,6 +16,10 @@ module.exports = exports = function(router, passport) {
   router.route('/push')
     .post(controller.pushNotification);
 
+  /* Will later have to move the following route once we have jawbone data as well */
+  router.route('/refresh/:id')
+    .get(controller.retrieveData);
+
   passport.use(controller.fitbitStrategy);
   router.use('/auth', passport.authenticate('fitbit'));
   // for fitbit it's a twp step process and we have to do passport auth twice

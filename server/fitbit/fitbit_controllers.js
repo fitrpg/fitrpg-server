@@ -42,7 +42,7 @@ module.exports = exports = {
               return saveInPromise(currentUser);
             }
           }).then(function() {
-            return exports.getAllData(token,tokenSecret,userId,timestamp);
+            return exports.getAllData(userId);
           }).fail(function (err) {
             console.log('Error: ',err); 
           }).done();
@@ -94,14 +94,21 @@ module.exports = exports = {
     // form.parse(req);
   },
 
-  getAllData: function(fitbitToken,fitbitSecret,id,date) {
+  retrieveData: function(req,res,next) {
+    var id = req.params.id;
+    console.log('id', id);
+    exports.getAllData(id);
+    res.send(200);
+  },
+
+  getAllData: function(id,cb) {
     var client = new FitbitApiClient(FITBIT_CONSUMER_KEY,FITBIT_CONSUMER_SECRET); 
-    var dateCreated = user.createdAt.yyyymmdd();
     User.findByIdQ({_id: id})
       .then(function(user) {
+        var dateCreated = user.createdAt.yyyymmdd();
         user.lastActive = user.lastActive || new Date();
         // GET PROFILE DATA
-        return client.requestResource('/profile.json','GET',fitbitToken,fitbitSecret).then(function(results){
+        return client.requestResource('/profile.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
           var profile = JSON.parse(results[0]);
           user.profile.avatar = profile.user.avatar;
           user.provider = 'fitbit';
@@ -111,7 +118,7 @@ module.exports = exports = {
       })
       .then(function(user) {
         // GET FRIEND DATA
-        return client.requestResource('/friends.json','GET',fitbitToken,fitbitSecret).then(function(results){ 
+        return client.requestResource('/friends.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){ 
           var friends = JSON.parse(results[0]).friends;
           var friendsArr = [];
           for (var i = 0; i < friends.length; i++ ) {
@@ -123,28 +130,28 @@ module.exports = exports = {
       })
       .then(function(user) {
         // GET STEPS AND CONVERT TO EXPERIENCE/LEVEL
-        return client.requestResource('/activities/steps/date/'+dateCreated+'/today.json','GET',fitbitToken,fitbitSecret).then(function(results){ 
+        return client.requestResource('/activities/steps/date/'+dateCreated+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){ 
           user.attributes.level = utils.calcLevel(JSON.parse(results[0])['activities-steps'], user.attributes.level);
           return user;
         });
       })
       .then(function(user) {
         // GET SLEEP MINUTES AND CONVERT TO VITALITY
-        return client.requestResource('/sleep/minutesAsleep/date/'+dateCreated+'/today.json','GET',fitbitToken,fitbitSecret).then(function(results){ 
+        return client.requestResource('/sleep/minutesAsleep/date/'+dateCreated+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){ 
           user.fitbit.vitality = utils.calcVitality(JSON.parse(results[0])['sleep-minutesAsleep']);
           return user;
         });
       })
       // GET DISTANCE AND CONVERT TO ENDURANCE
       .then(function(user) {
-        return client.requestResource('/activities/distance/date/'+dateCreated+'/today.json','GET',fitbitToken,fitbitSecret).then(function(results){ 
+        return client.requestResource('/activities/distance/date/'+dateCreated+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){ 
           user.fitbit.endurance = utils.calcEndurance(JSON.parse(results[0])['activities-distance']);
           return user;
         });
       })
       // GET VERY ACTIVE MINUTES AND CONVERT TO ATTACK BONUS
       .then(function(user) {
-        return client.requestResource('/activities/minutesVeryActive/date/'+dateCreated+'/today.json','GET',fitbitToken,fitbitSecret).then(function(results){ 
+        return client.requestResource('/activities/minutesVeryActive/date/'+dateCreated+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){ 
           user.fitbit.attackBonus = utils.calcAttackBonus(JSON.parse(results[0])['activities-minutesVeryActive']);
           return user;
         });
@@ -156,7 +163,7 @@ module.exports = exports = {
         } else {
           return user; // we've already checked the user's sleep today
         }
-        return client.requestResource('/sleep/efficiency/date/'+lastChecked.yyyymmdd()+'/today.json','GET',fitbitToken,fitbitSecret).then(function(results){ 
+        return client.requestResource('/sleep/efficiency/date/'+lastChecked.yyyymmdd()+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){ 
           user.fitbit.HPRecov = utils.calcHpRecov(JSON.parse(results[0])['sleep-efficiency']);
           return user; 
         });       
@@ -170,7 +177,7 @@ module.exports = exports = {
         var answerPromises = [];
         var num = datesArr.length-7 > 0 ? datesArr.length-7 : 0; //only check the last 7 days
         for (var i = datesArr.length-1; i >= num; i--) {
-          answerPromises.push(client.requestResource('/activities/date/'+datesArr[i]+ '.json','GET',fitbitToken,fitbitSecret));
+          answerPromises.push(client.requestResource('/activities/date/'+datesArr[i]+ '.json','GET',user.accessToken,user.accessTokenSecret));
         }
         return Q.all(answerPromises)
           .then(function(results) {
