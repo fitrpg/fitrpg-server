@@ -15,7 +15,7 @@ var mongoose = require('mongoose');
     experience : Number,
     vitality : Number,
     strength : Number,
-    enduarance : Number,
+    endurance : Number,
     dexterity : Number
    }
 
