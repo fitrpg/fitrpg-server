@@ -62,8 +62,7 @@ module.exports = exports = {
   pushNotification: function(req,res,next) {
     console.log('gets herllle');
     console.log(req);
-    console.log(req.params);
-    console.log(JSON.stringify(req)); // this should have our subscriber data, do something with it, ie save to db that update is needed
+    console.log(req.body);
     res.set('Content-Type', 'application/json');
     res.send(204);
   },
