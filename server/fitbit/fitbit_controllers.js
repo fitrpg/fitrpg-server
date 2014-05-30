@@ -7,8 +7,8 @@ var utils = require('./fitbit_utility.js').util;
 var Q = require("q");
 
 // For processing Fitbit's push notification in the format of multipart/form (not bodyparsed :\)
-var formidable = require('formidable');
-var util = require('util');
+var multiparty = require('multiparty');
+var format = require('util').format;
 
 var mongoose = require('mongoose');
 
@@ -72,27 +72,48 @@ module.exports = exports = {
     //   res.send(204);
     // });
 
-  
-    var form = new formidable.IncomingForm(),
-        files = [],
-        fields = [];
+    var form = new multiparty.Form();
 
-    form
-      .on('field', function(field, value) {
-        console.log(field, value);
-        fields.push([field, value]);
-      })
-      .on('file', function(field, file) {
-        console.log(field, file);
-        files.push([field, file]);
-      })
-      .on('end', function() {
-        console.log('-> upload done');
-        console.log('received fields:\n\n '+util.inspect(fields));
-        res.set('Content-Type', 'application/json');
-        res.send(204);
-      });
+    form.on('error', next);
+    form.on('close', function(){
+      console.log('done');
+      console.log('me',req.files.updates.path);
+      console.log('test',JSON.parse(req.files.updates.path));
+      res.set('Content-Type', 'application/json');
+      res.send(204);
+    });
+
+    // listen on field event for title
+    form.on('field', function(name, val){
+      if (name !== 'title') return;
+      title = val;
+    });
+
     form.parse(req);
+
+
+
+
+    // var form = new formidable.IncomingForm(),
+    //     files = [],
+    //     fields = [];
+
+    // form
+    //   .on('field', function(field, value) {
+    //     console.log(field, value);
+    //     fields.push([field, value]);
+    //   })
+    //   .on('file', function(field, file) {
+    //     console.log(field, file);
+    //     files.push([field, file]);
+    //   })
+    //   .on('end', function() {
+    //     console.log('-> upload done');
+    //     console.log('received fields:\n\n '+util.inspect(fields));
+    //     res.set('Content-Type', 'application/json');
+    //     res.send(204);
+    //   });
+    // form.parse(req);
     
   },
 
