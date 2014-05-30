@@ -17,15 +17,16 @@ module.exports = exports = function (app, express,passport, routers) {
   app.set('base url', process.env.URL || 'http://127.0.0.1');
   app.post('/fitbit/push', function(req,res) {
     console.log('makes it here');
+    console.log(req);
     console.log(req.headers["content-length"]);
     console.log(req.body);
     res.set('Content-Type', 'application/json');
     res.send(204);
   });
-  app.use(cookieParser());
+  //app.use(cookieParser());
   app.use(morgan('dev'));
-  app.use(bodyParser());
-  app.use(middle.cors);
+  //app.use(bodyParser());
+  //app.use(middle.cors);
   app.use(session({secret: 'amiraconormatt', maxAge: 360*5}));
   app.use(passport.initialize());
   app.use(passport.session());
