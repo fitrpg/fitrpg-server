@@ -19,7 +19,7 @@ module.exports = exports = function (app, express,passport, routers) {
   app.use(morgan('dev'));
   app.use(bodyParser());
   app.use(middle.cors);
-  app.use(session({secret: 'amiraconormatt', maxAge: 360*5}));
+  app.use(session({secret: process.env.SECRET || 'secret', maxAge: 360*5}));
   app.use(passport.initialize());
   app.use(passport.session());
   app.use('/fitbit', routers.FitbitRouter);
