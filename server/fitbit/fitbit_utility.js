@@ -57,9 +57,7 @@ exports.util = {
     return bonus;
   },
 
-  /* we use steps as experience, and turn those into level points, but we never actually
-   * need the value of experience itself so it is
-     never stored */
+  // we use steps as experience, and turn those into level points
   calcLevel: function(array, currLvl) {
     var level = currLvl || 1;
     var total = 0;
@@ -73,6 +71,15 @@ exports.util = {
       level++;
     }
     return level;
+  },
+
+  calcExperience: function(array) {
+
+    var experience = 0;
+    for (var i=0; i<array.length; i++) {
+      total += parseInt(array[i].value);
+    }
+    return experience;
   },
 
   calcSkillPoints: function(currSkillPts, lvl, currLvl) {
