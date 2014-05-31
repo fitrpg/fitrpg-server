@@ -3,6 +3,8 @@ var controller = require('./fitbit_controllers.js');
 var User = require('../user/user_model.js');
 
 module.exports = exports = function(router, passport) {
+
+  // see if we can set this elsewhere
   passport.serializeUser(function (user, done) {
     done(null, user._id);
   });
@@ -23,7 +25,7 @@ module.exports = exports = function(router, passport) {
   passport.use(controller.fitbitStrategy);
   router.use('/auth', passport.authenticate('fitbit'));
   // for fitbit it's a twp step process and we have to do passport auth twice
-  router.use('/authcallback', passport.authenticate('fitbit')); 
+  router.use('/authcallback', passport.authenticate('fitbit'));
   router.use('/authcallback', controller.getOauthToken);
 
 };

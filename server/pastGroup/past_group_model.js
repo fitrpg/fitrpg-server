@@ -3,9 +3,9 @@
 var mongoose = require('mongoose');
 
 var GroupSchema = new mongoose.Schema({
-  _id : String,
-  players : [],
-  winner : String,
+  _id       : String,
+  winner    : String,
+  players   : [],
   createdAt : Date
 });
 

@@ -4,8 +4,8 @@ var mongoose = require('mongoose');
 
 
  var PastSoloSchema = new mongoose.Schema({
-   _id : String,
-   win : Boolean,
+   _id       : String,
+   win       : Boolean,
    createdAt : Date
  });
 

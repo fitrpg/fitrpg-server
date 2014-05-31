@@ -3,18 +3,18 @@
 var mongoose = require('mongoose');
 
 var GroupSchema = new mongoose.Schema({
-  _id   : String,
-  title : String,
+  _id         : String,
+  title       : String,
   description : String,
-  attributes : {
-   gold : Number,
+  bet         : Number,
+  attributes  : {
+   gold       : Number,
    experience : Number,
-   vitality : Number,
-   strength : Number,
-   endurance : Number,
-   dexterity : Number
- },
- bet : Number
+   vitality   : Number,
+   strength   : Number,
+   endurance  : Number,
+   dexterity  : Number
+ }
 
 });
 
