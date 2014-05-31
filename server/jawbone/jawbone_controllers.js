@@ -21,7 +21,7 @@ module.exports = exports = {
   }),
 
   getTempToken: function (req, res, next) {
-    console.log('Nothing happens here because it redirects to the Jawbone site.');
+    //Nothing happens here because it redirects to the Jawbone site.
   },
 
   getAccessToken: function (req, res, next) {
@@ -30,7 +30,6 @@ module.exports = exports = {
     request.get(url, function (err,thing,jsonObj) {
       if (err) { res.send(err)}
         jsonObj = JSON.parse(jsonObj);
-        console.log(jsonObj);
         var access_token = jsonObj['access_token']; //refresh token?
         // with this token we can get the user profile and if it exists, we'll get it, if not, we'll make it
         var user =  {};
@@ -48,7 +47,7 @@ module.exports = exports = {
   // where to put this function...
   getAllData: function(accessToken) {
     var options = {
-      access_token: accessToken 
+      access_token: accessToken
     };
     var up = JawboneUp(options);
     up.friends.get({}, function(){
@@ -59,10 +58,8 @@ module.exports = exports = {
     });
     up.workouts.get({}, function() {
 
-    }); 
+    });
 
   }
 
 };
-
-

@@ -1,7 +1,7 @@
 'use strict'
 
 var Item = require('./item_model.js');
-var Q     = require('q');
+var Q    = require('q');
 
 module.exports = exports = {
   get : function(req, res, next) {

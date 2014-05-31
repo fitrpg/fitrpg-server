@@ -58,7 +58,7 @@ exports.util = {
   },
 
   /* we use steps as experience, and turn those into level points, but we never actually
-   * need the value of experience itself so it is 
+   * need the value of experience itself so it is
      never stored */
   calcLevel: function(array, currLvl) {
     var level = currLvl || 1;
