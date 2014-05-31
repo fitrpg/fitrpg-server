@@ -47,7 +47,7 @@ module.exports = exports = {
         next(reason);
       });
   },
-  
+
   checkUsername: function(req,res,next) {
     var $promise = Q.nbind(User.findOne, User);
     $promise({username:req.params.username})
