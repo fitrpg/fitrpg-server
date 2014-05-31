@@ -3,24 +3,21 @@
 var mongoose = require('mongoose');
 
 var ItemSchema = new mongoose.Schema({
-    _id : String,
-    name : String,
-    cost : Number,
-    image : String,
-    size : Number,
-    modifiers : {
-     gold : Number,
-     experience : Number,
-     vitality : Number,
-     strength : Number,
-     endurance : Number,
-     dexterity : Number
-    },
-    type : String,
+    _id        : String,
+    name       : String,
+    image      : String,
+    type       : String,
+    level      : Number,
+    cost       : Number,
+    size       : Number,
+    hp         : Number,
+    sellPrice  : Number,
+    vitality   : Number,
+    strength   : Number,
+    endurance  : Number,
+    dexterity  : Number,
     consumable : Boolean,
-    sellPrice : Number,
-    level : Number,
-    rare : Boolean
+    rare       : Boolean
 });
 
 module.exports = exports = mongoose.model('items', ItemSchema);
