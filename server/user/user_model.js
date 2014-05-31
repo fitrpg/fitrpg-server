@@ -19,6 +19,13 @@ var UserSchema = new mongoose.Schema({
     level: {type: Number, default: 0},
     skillPts: {type: Number, default: 0}
   },
+  equipped : {
+    weapon1 : String,
+    weapon2 : String,
+    armor : String,
+    accessory1 : String,
+    accessory2 : String
+  },
   character : String,
   createdAt : Date,
   // fitbit and jawbone specific, calculated from data
