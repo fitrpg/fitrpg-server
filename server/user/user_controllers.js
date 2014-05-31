@@ -54,16 +54,10 @@ module.exports = exports = {
         console.log('user');
         console.log(user);
         if(user) {
-<<<<<<< HEAD
           res.json({"username":"username"});
         } else {
           res.json(null);
-=======
-          res.send('User exists.');
-        } else {
-          res.send(req.params.username);
->>>>>>> add else to check username
-        }
+        } 
       })
       .fail(function (reason) {
         res.end(req.params.username);
