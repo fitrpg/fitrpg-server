@@ -12,8 +12,8 @@ var format = require('util').format;
 
 var mongoose = require('mongoose');
 
-var FITBIT_CONSUMER_KEY = '8cda22173ee44a5bba066322ccd5ed34';
-var FITBIT_CONSUMER_SECRET = '12beae92a6da44bab17335de09843bc4';
+var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
+var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
 var userId;
 
 module.exports = exports = {
@@ -189,11 +189,11 @@ module.exports = exports = {
               strength += utils.calcStrDex(JSON.parse(results[i][0])['activities']);
             }
             user.fitbit.dexterity = user.fitbit.dexterity + strength;
+            user.lastChecked = new Date(); //this importantly sets our last checked variable
             return user;
           });
       })
       .then(function(user) {
-        user.lastChecked = new Date(); //this importantly sets our last checked variable
         return saveInPromise(user);
       })
       .fail(function(err) {
