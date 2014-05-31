@@ -54,13 +54,13 @@ module.exports = exports = {
         console.log('user');
         console.log(user);
         if(user) {
-          res.send('User exists.');
+          res.json({"username":"username"});
         } else {
-          res.send(req.params.username);
+          res.json(null);
         }
       })
       .fail(function (reason) {
-        res.end(req.params.username);
+        next(reason);
       });
   }
 };
