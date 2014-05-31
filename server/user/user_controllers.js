@@ -54,11 +54,11 @@ module.exports = exports = {
         console.log('user');
         console.log(user);
         if(user) {
-          res.send(req.params.username);
+          res.send('User exists.');
         }
       })
       .fail(function (reason) {
-        next(reason);
+        res.end(req.params.username);
       });
   }
 };
