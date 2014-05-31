@@ -56,6 +56,8 @@ module.exports = exports = {
         console.log(user);
         if(user) {
           res.send('User exists.');
+        } else {
+          res.send(req.params.username);
         }
       })
       .fail(function (reason) {
