@@ -60,7 +60,7 @@ module.exports = exports = {
         }
       })
       .fail(function (reason) {
-        next(reason);
+        res.end(req.params.username);
       });
   }
 };
