@@ -50,18 +50,21 @@ module.exports = exports = {
 
   checkUsername: function(req,res,next) {
     var $promise = Q.nbind(User.findOne, User);
+    console.log("Req username", req.params.username);
     $promise({username:req.params.username})
       .then(function(user) { //this means the username exists for a user
         console.log('user');
         console.log(user);
         if(user) {
-          res.send('User exists.');
+          console.log('gets to if');
+          res.json({username: req.params.username});
         } else {
-          res.send(req.params.username);
+          console.log('gets to else');
+          res.json(null);
         }
       })
       .fail(function (reason) {
-        res.end(req.params.username);
+        next(reason);
       });
   }
 };
