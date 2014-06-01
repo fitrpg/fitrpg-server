@@ -63,5 +63,4 @@ module.exports = exports = {
         res.end(req.params.username);
       });
   }
-  
 };
