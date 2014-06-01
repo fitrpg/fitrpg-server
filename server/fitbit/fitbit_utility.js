@@ -74,13 +74,10 @@ exports.util = {
   },
 
   calcExperience: function(array) {
-    console.log('experience f');
-    console.log(array);
     var experience = 0;
     for (var i=0; i<array.length; i++) {
-      total += parseInt(array[i].value);
+      experience += parseInt(array[i].value);
     }
-    console.log('xp', experience);
     return experience;
   },
 
