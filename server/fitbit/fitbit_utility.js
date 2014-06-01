@@ -1,4 +1,3 @@
-var fitIds = require('./fitbit_activity_ids.js');
 
 exports.util = {
 
@@ -21,7 +20,7 @@ exports.util = {
     return totalVitality;
   },
 
-  calcStrDex: function(array) {
+  calcStrDex: function(array,fitIds) {
     // ids is the strength/dexterity activity id array
     var total = 0;
     var minPerPoint = 30;

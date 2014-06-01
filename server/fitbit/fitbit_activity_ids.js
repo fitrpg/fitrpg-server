@@ -1,4 +1,4 @@
-strengthIds = [
+exports.strengthIds = [
   90001,
   1070,
   2020,
@@ -65,7 +65,7 @@ strengthIds = [
   53002,
 ];
 
-dexterityIds = [
+exports.dexterityIds = [
   1010,
   1030,
   18240,
@@ -147,5 +147,3 @@ dexterityIds = [
   15730,
   56001,
 ];
-
-exports.ids = strengthIds.concat(dexterityIds);
