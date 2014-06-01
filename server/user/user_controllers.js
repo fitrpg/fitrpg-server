@@ -51,14 +51,10 @@ module.exports = exports = {
     var $promise = Q.nbind(User.findOne, User);
     $promise({username:req.params.username})
       .then(function(user) { //this means the username exists for a user
-        if(user) {
-          res.json(user);
-        } else {
-          res.json(null);
-        } 
+        res.json(user);
       })
       .fail(function (reason) {
-        res.end(req.params.username);
+        next(reason);
       });
   }
 };
