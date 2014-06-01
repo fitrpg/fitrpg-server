@@ -52,7 +52,7 @@ module.exports = exports = {
     $promise({username:req.params.username})
       .then(function(user) { //this means the username exists for a user
         if(user) {
-          res.json(user});
+          res.json(user);
         } else {
           res.json(null);
         } 
