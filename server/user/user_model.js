@@ -10,7 +10,7 @@ var UserSchema = new mongoose.Schema({
   needsUpdate        : {type: Boolean, default: false},
   provider           : String,
   // game specific attributes, independent of fitbit
-  username   : String,
+  username   : {type: String, default: 'Undefined'},
   character  : String,
   createdAt  : Date,
   attributes : {
