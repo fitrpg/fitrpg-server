@@ -5,6 +5,7 @@ var FitbitStrategy = require('./fitbit-passport.js');
 var FitbitApiClient = require('fitbit-node');
 var utils = require('./fitbit_utility.js').util;
 var Q = require("q");
+var fitIds = require('./fitbit_activity_ids.js');
 
 // For processing Fitbit's push notification in the format of multipart/form (not bodyparsed :\)
 var multiparty = require('multiparty');
@@ -12,10 +13,9 @@ var format = require('util').format;
 
 var mongoose = require('mongoose');
 
-// var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
-// var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
-var FITBIT_CONSUMER_KEY = '8cda22173ee44a5bba066322ccd5ed34';
-var FITBIT_CONSUMER_SECRET = '12beae92a6da44bab17335de09843bc4';
+var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
+var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
+
 var userId;
 
 module.exports = exports = {
@@ -172,7 +172,7 @@ module.exports = exports = {
         });
       })
       .then(function(user) {
-        // GET WORKOUTS AND CALCULATE THEM TO BE DEXTERITY
+        // GET WORKOUTS AND CALCULATE THEM TO BE DEXTERITY/STRENGTH
         var today = new Date();
         var lastChecked = user.lastChecked || today;
         if (lastChecked === today) { return user; } //we've already checked
@@ -184,11 +184,14 @@ module.exports = exports = {
         }
         return Q.all(answerPromises)
           .then(function(results) {
-            var strength= 0;
+            var dexterity = 0;
+            var strength = 0;
             for (var i = 0; i<results.length;i++) {
-              strength += utils.calcStrDex(JSON.parse(results[i][0])['activities']);
+              dexterity += utils.calcStrDex(JSON.parse(results[i][0])['activities'],fitIds.dexterityIds);
+              strength += utils.calcStrDex(JSON.parse(results[i][0])['activities'],fitIds.strengthIds);
             }
-            user.fitbit.dexterity = user.fitbit.dexterity + strength;
+            user.fitbit.dexterity = user.fitbit.dexterity + dexterity;
+            user.fitbit.strength = user.fitbit.strength + strength;
             user.lastChecked = new Date(); //this importantly sets our last checked variable
             return user;
           });
