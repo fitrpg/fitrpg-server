@@ -10,7 +10,7 @@ var UserSchema = new mongoose.Schema({
   needsUpdate        : {type: Boolean, default: false},
   provider           : String,
   // game specific attributes, independent of fitbit
-  username   : String,
+  username   : {type: String, default: 'Undefined'},
   character  : String,
   createdAt  : Date,
   attributes : {
@@ -21,7 +21,8 @@ var UserSchema = new mongoose.Schema({
     endurance  : {type: Number, default: 20},
     dexterity  : {type: Number, default: 20},
     level      : {type: Number, default: 0},
-    skillPts   : {type: Number, default: 0}
+    skillPts   : {type: Number, default: 0},
+    HP         : {type: Number, default: 0}
   },
   equipped : {
     weapon1     : String,

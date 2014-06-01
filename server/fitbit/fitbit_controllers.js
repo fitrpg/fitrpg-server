@@ -12,8 +12,10 @@ var format = require('util').format;
 
 var mongoose = require('mongoose');
 
-var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
-var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
+// var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
+// var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
+var FITBIT_CONSUMER_KEY = '8cda22173ee44a5bba066322ccd5ed34';
+var FITBIT_CONSUMER_SECRET = '12beae92a6da44bab17335de09843bc4';
 var userId;
 
 module.exports = exports = {
@@ -33,8 +35,6 @@ module.exports = exports = {
             } else {
               var currentUser = new User({
                 _id: profile.id,
-                accessToken: token,
-                accessTokenSecret: tokenSecret,
                 createdAt: timestamp
               });
               done(null,currentUser);
@@ -42,7 +42,9 @@ module.exports = exports = {
               return saveInPromise(currentUser);
             }
           }).then(function() {
-            return exports.getAllData(userId);
+            // re-logging in changes the token and secret, so in any case we must update it
+            // the second parameter is null because it expects a potential callback
+            return exports.getAllData(userId, null, token, tokenSecret);
           }).fail(function (err) {
           }).done();
       });
@@ -72,8 +74,6 @@ module.exports = exports = {
     // form.on('error', next);
 
     // form.on('part', function(part) {
-    //   console.log("PART XYX", part);
-    //   //console.log(part.read());
     //   part.on('data', function(chunk) {
     //     console.log('got %d bytes of data, bitches.', chunk.length, chunk);
     //   });
@@ -98,13 +98,17 @@ module.exports = exports = {
     res.send(200);
   },
 
-  getAllData: function(id,cb) {
+  getAllData: function(id,cb,token,tokenSecret) {
     var client = new FitbitApiClient(FITBIT_CONSUMER_KEY,FITBIT_CONSUMER_SECRET);
     var dateCreated;
     User.findByIdQ({_id: id})
       .then(function(user) {
+        if (token && tokenSecret) {
+          user.accessToken = token;
+          user.accessTokenSecret = tokenSecret;
+        }
         dateCreated = user.createdAt.yyyymmdd();
-        user.lastActive = user.lastActive || new Date();
+        user.lastActive = user.lastActive || new Date(); //if new date this means they are a first time user
         // GET PROFILE DATA
         return client.requestResource('/profile.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
           var profile = JSON.parse(results[0]);
@@ -129,6 +133,7 @@ module.exports = exports = {
       .then(function(user) {
         // GET STEPS AND CONVERT TO EXPERIENCE/LEVEL
         return client.requestResource('/activities/steps/date/'+dateCreated+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
+          user.attributes.experience = utils.calcExperience(JSON.parse(results[0])['activities-steps']);
           user.attributes.level = utils.calcLevel(JSON.parse(results[0])['activities-steps'], user.attributes.level);
           return user;
         });
