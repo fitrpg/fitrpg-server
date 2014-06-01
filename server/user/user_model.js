@@ -25,11 +25,26 @@ var UserSchema = new mongoose.Schema({
     HP         : {type: Number, default: 0}
   },
   equipped : {
-    weapon1     : String,
-    weapon2     : String,
-    armor       : String,
-    accessory1  : String,
-    accessory2  : String
+    weapon1 : {
+      inventoryId: Number,
+      name: String
+    },
+    weapon2 : {
+      inventoryId: Number,
+      name: String
+    },
+    armor : {
+      inventoryId: Number,
+      name: String
+    },
+    accessory1 : {
+      inventoryId: Number,
+      name: String
+    },
+    accessory2 : {
+      inventoryId: Number,
+      name: String
+    }
   },
   // fitbit and jawbone specific, calculated from data
   fitbit : {
@@ -37,6 +52,7 @@ var UserSchema = new mongoose.Schema({
     vitality     : {type: Number, default: 0},
     attackBonus  : {type: Number, default: 0},
     dexterity    : {type: Number, default: 0},
+    strength     : {type: Number, default: 0},
     HPRecov      : {type: Number, default:0}
   },
   jawbone : {
