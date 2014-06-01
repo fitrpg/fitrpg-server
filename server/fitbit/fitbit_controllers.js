@@ -12,8 +12,10 @@ var format = require('util').format;
 
 var mongoose = require('mongoose');
 
-var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
-var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
+// var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
+// var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
+var FITBIT_CONSUMER_KEY = '8cda22173ee44a5bba066322ccd5ed34';
+var FITBIT_CONSUMER_SECRET = '12beae92a6da44bab17335de09843bc4';
 var userId;
 
 module.exports = exports = {
@@ -29,8 +31,10 @@ module.exports = exports = {
         User.findByIdQ({_id: profile.id})
           .then(function (foundUser) {
             if (foundUser) {
+              console.log('found user');
               done(null,foundUser);
             } else {
+              console.log('user not fund');
               var currentUser = new User({
                 _id: profile.id,
                 accessToken: token,
@@ -42,6 +46,7 @@ module.exports = exports = {
               return saveInPromise(currentUser);
             }
           }).then(function() {
+            console.log('exports');
             return exports.getAllData(userId);
           }).fail(function (err) {
           }).done();
@@ -107,16 +112,19 @@ module.exports = exports = {
         user.lastActive = user.lastActive || new Date();
         // GET PROFILE DATA
         return client.requestResource('/profile.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
+          console.log('makes it to hereeee');
           var profile = JSON.parse(results[0]);
           user.profile.avatar = profile.user.avatar;
           user.provider = 'fitbit';
           user.profile.displayName = profile.user.displayName;
+          console.log(user);
           return user;
         });
       })
       .then(function(user) {
         // GET FRIEND DATA
         return client.requestResource('/friends.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
+          console.log('friends');
           var friends = JSON.parse(results[0]).friends;
           var friendsArr = [];
           for (var i = 0; i < friends.length; i++ ) {
@@ -129,6 +137,7 @@ module.exports = exports = {
       .then(function(user) {
         // GET STEPS AND CONVERT TO EXPERIENCE/LEVEL
         return client.requestResource('/activities/steps/date/'+dateCreated+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
+          console.log('gets here');
           user.attributes.experience = utils.calcExperience(JSON.parse(results[0])['activities-steps']);
           user.attributes.level = utils.calcLevel(JSON.parse(results[0])['activities-steps'], user.attributes.level);
           return user;
