@@ -53,7 +53,8 @@ var UserSchema = new mongoose.Schema({
     attackBonus  : {type: Number, default: 0},
     dexterity    : {type: Number, default: 0},
     strength     : {type: Number, default: 0},
-    HPRecov      : {type: Number, default:0}
+    HPRecov      : {type: Number, default:0},
+    experience   : {type: Number, default:0}
   },
   jawbone : {
     sleepQuality       : String,

@@ -13,10 +13,9 @@ var format = require('util').format;
 
 var mongoose = require('mongoose');
 
-// var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
-// var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
-var FITBIT_CONSUMER_KEY = '8cda22173ee44a5bba066322ccd5ed34';
-var FITBIT_CONSUMER_SECRET = '12beae92a6da44bab17335de09843bc4';
+var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
+var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
+
 var userId;
 
 module.exports = exports = {
@@ -134,8 +133,8 @@ module.exports = exports = {
       .then(function(user) {
         // GET STEPS AND CONVERT TO EXPERIENCE/LEVEL
         return client.requestResource('/activities/steps/date/'+dateCreated+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
-          user.attributes.experience = utils.calcExperience(JSON.parse(results[0])['activities-steps']);
-          user.attributes.level = utils.calcLevel(JSON.parse(results[0])['activities-steps'], user.attributes.level);
+          user.fitbit.experience = utils.calcExperience(JSON.parse(results[0])['activities-steps']);
+          user.attributes.level = utils.calcLevel(user.fitbit.experience+user.attributes.experience, user.attributes.level);
           return user;
         });
       })
