@@ -22,7 +22,7 @@ var UserSchema = new mongoose.Schema({
     dexterity  : {type: Number, default: 20},
     level      : {type: Number, default: 0},
     skillPts   : {type: Number, default: 0},
-    HP         : {type: Number, default: 0}
+    HP         : {type: Number, default: 500}
   },
   equipped : {
     weapon1 : {
