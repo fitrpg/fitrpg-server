@@ -38,6 +38,7 @@ module.exports = exports = function (app, express,passport, routers) {
   app.use('/pastgroups', routers.PastGroupRouter);
   app.use('/items', routers.ItemRouter);
   app.use('/battles', routers.BattleRouter);
+  app.use('/quests', routers.QuestRouter);
   app.use(middle.logError);
   app.use(middle.handleError);
   app.use(methodOverride());
