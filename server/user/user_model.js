@@ -69,7 +69,8 @@ var UserSchema = new mongoose.Schema({
   inventory      : [],
   lastActive     : Date,
   missionsVersus : [],
-  missionsSolo   : [],
+  battles        : [],
+  quests         : [],
   profile        : {
     displayName  : String,
     avatar       : String

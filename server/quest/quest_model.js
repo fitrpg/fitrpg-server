@@ -10,7 +10,6 @@ var mongoose = require('mongoose');
     gold        :  Number,
     winGoals    :  [],
     experienceG :  Number,
-    lastCompleted: Date
 
  });
 
