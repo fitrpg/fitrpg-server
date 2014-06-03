@@ -2,6 +2,7 @@
 
 var Battle = require('./battle_model.js');
 var Q     = require('q');
+var url = require('url');
 
 module.exports = exports = {
   get : function(req, res, next) {
@@ -16,7 +17,9 @@ module.exports = exports = {
   },
   getBattles : function(req, res, next) {
     var $promise = Q.nbind(Battle.find, Battle);
-    $promise()
+    var url_parts = url.parse(req.url, true);
+    var query = url_parts.query;
+    $promise(query)
       .then(function (battles) {
         res.json(battles);
       })

@@ -2,6 +2,7 @@
 
 var Item = require('./item_model.js');
 var Q    = require('q');
+var url = require('url');
 
 module.exports = exports = {
   get : function(req, res, next) {
@@ -16,7 +17,9 @@ module.exports = exports = {
   },
   getItems : function(req, res, next) {
     var $promise = Q.nbind(Item.find, Item);
-    $promise()
+    var url_parts = url.parse(req.url, true);
+    var query = url_parts.query;
+    $promise(query)
       .then(function (items) {
         res.json(items);
       })
