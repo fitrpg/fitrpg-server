@@ -69,7 +69,9 @@ exports.util = {
     return level;
   },
 
-  calcExperience: function(array) {
+  //takes in an array of activities that have value as a property
+  // and adds them up 
+  calcCumValue: function(array) {
     var experience = 0;
     for (var i=0; i<array.length; i++) {
       experience += parseInt(array[i].value);

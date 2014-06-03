@@ -22,6 +22,12 @@ module.exports = exports = function(router, passport) {
   router.route('/refresh/:id')
     .get(controller.retrieveData);
 
+  router.route('/daterange/:id/:type/:activity/:startDate/:endDate')
+    .get(controller.getActivitiesDateRange);
+
+  router.route('/timerange/:id/:activity/:startDate/:endDate/:startTime/:endTime')
+    .get(controller.getActivitiesTimeRange);
+
   passport.use(controller.fitbitStrategy);
   router.use('/auth', passport.authenticate('fitbit'));
   // for fitbit it's a twp step process and we have to do passport auth twice
