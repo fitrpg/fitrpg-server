@@ -12,6 +12,7 @@ var UserSchema = new mongoose.Schema({
   // game specific attributes, independent of fitbit
   username   : String,
   character  : String,
+  characterClass : String,
   createdAt  : Date,
   attributes : {
     gold       : {type: Number, default: 0},
