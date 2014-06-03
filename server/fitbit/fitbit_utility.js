@@ -57,15 +57,12 @@ exports.util = {
   },
 
   // we use steps as experience, and turn those into level points
-  calcLevel: function(array, currLvl) {
+  calcLevel: function(experience, currLvl) {
     var level = currLvl || 1;
-    var total = 0;
+    var total = experience;
     var expToLevel = function(lvl) {
       return 100*Math.pow(lvl,3) + 360*Math.pow(lvl,2) + 3500*lvl;
     };
-    for (var i=0; i<array.length; i++) {
-      total += parseInt(array[i].value);
-    }
     while (expToLevel(level) < total) {
       level++;
     }

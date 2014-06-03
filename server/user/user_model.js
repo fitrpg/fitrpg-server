@@ -22,7 +22,7 @@ var UserSchema = new mongoose.Schema({
     dexterity  : {type: Number, default: 20},
     level      : {type: Number, default: 0},
     skillPts   : {type: Number, default: 0},
-    HP         : {type: Number, default: 0}
+    HP         : {type: Number, default: 500}
   },
   equipped : {
     weapon1 : {
@@ -53,7 +53,8 @@ var UserSchema = new mongoose.Schema({
     attackBonus  : {type: Number, default: 0},
     dexterity    : {type: Number, default: 0},
     strength     : {type: Number, default: 0},
-    HPRecov      : {type: Number, default:0}
+    HPRecov      : {type: Number, default:0},
+    experience   : {type: Number, default:0}
   },
   jawbone : {
     sleepQuality       : String,

@@ -6,8 +6,8 @@ var JawboneStrategy = require('./jawbone-passport.js');
 var JawboneUp = require('jawbone-up');
 
 var authorizeTokenLink = 'https://jawbone.com/auth/oauth2/token';
-var client_id = process.env.JAWBONE_CLIENT_ID;
-var secret = process.env.JAWBONE_SECRET;
+var client_id = process.env.JAWBONE_CLIENT_ID || 'asda';
+var secret = process.env.JAWBONE_SECRET || 'asdas';
 var callback = 'https://fitrpg.azurewebsites.net/jawbone/authcallback';
 
 module.exports = exports = {
