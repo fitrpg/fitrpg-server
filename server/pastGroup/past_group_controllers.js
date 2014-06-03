@@ -2,6 +2,7 @@
 
 var PastGroup = require('./past_group_model.js');
 var Q         = require('q');
+var url       = require('url');
 
 module.exports = exports = {
   get : function(req, res, next) {
@@ -16,7 +17,9 @@ module.exports = exports = {
   },
   getPastGroups : function(req, res, next) {
     var $promise = Q.nbind(PastGroup.find, PastGroup);
-    $promise()
+    var url_parts = url.parse(req.url, true);
+    var query = url_parts.query;
+    $promise(query)
       .then(function (pastGroups) {
         res.json(pastGroups);
       })
