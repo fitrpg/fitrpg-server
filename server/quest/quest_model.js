@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
     title       :  String,
     description :  String,
     numDays     :  Number,
+    numHours    :  Number,
     gold        :  Number,
     winGoals    :  Number,
     experienceG :  Number,
