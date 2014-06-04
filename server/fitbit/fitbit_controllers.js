@@ -13,6 +13,7 @@ var format = require('util').format;
 
 var mongoose = require('mongoose');
 
+
 var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
 var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
 var myClient = new FitbitApiClient(FITBIT_CONSUMER_KEY,FITBIT_CONSUMER_SECRET);
@@ -61,7 +62,7 @@ module.exports = exports = {
   },
 
   subscribeUser: function(fitbitToken,fitbitSecret,id) { //subscribe this user so we get push notifications
-    var client = myClient;
+    var client = new FitbitApiClient(FITBIT_CONSUMER_KEY,FITBIT_CONSUMER_SECRET);
     client.requestResource("/apiSubscriptions/"+id+".json", "POST", fitbitToken, fitbitSecret);
   },
 
@@ -95,7 +96,7 @@ module.exports = exports = {
   },
 
   getAllData: function(id,cb,token,tokenSecret) {
-    var client = myClient;
+    var client = new FitbitApiClient(FITBIT_CONSUMER_KEY,FITBIT_CONSUMER_SECRET);
     var dateCreated;
     User.findByIdQ({_id: id})
       .then(function(user) {
@@ -211,19 +212,20 @@ module.exports = exports = {
   },
 
   getActivitiesDateRange: function(req,res,next) {
+    var client    = myClient;
     var id        = req.params.id;
     var type      = req.params.type; //will be 'sleep' or 'activities'
     var activity  = req.params.activity;
     var startDate = req.params.startDate;
     var endDate   = req.params.endDate;
-    var client    = myClient;
     var qString   = type + '-' + activity;
     var url = '/' + type + '/' + activity + '/date/' + startDate + '/' + endDate + '.json';
+    console.log(url);
     User.findByIdQ({_id: id})
       .then(function(user) {
         return client.requestResource(url, 'GET', user.accessToken, user.accessTokenSecret).then(function(results) {
           var total = utils.calcCumValue(JSON.parse(results[0])[qString]);
-          res.send(JSON.stringify(total));
+          res.json({total:total});
         });
       })
       .fail(function(err) {
@@ -234,20 +236,21 @@ module.exports = exports = {
 
   // Possible activities are calories, steps, distance, elevation, floors
   getActivitiesTimeRange: function(req,res,next) {
+    var client    = myClient;
     var id        = req.params.id;
     var activity  = req.params.activity;
     var startDate = req.params.startDate;
     var endDate   = req.params.endDate;
     var startTime = req.params.startTime;
     var endTime   = req.params.endTime;
-    var client    = myClient;
     var qString   = 'activities-' + activity;
     var url = '/activities/' + activity + '/date/' + startDate + '/' + endDate + '/15min/time/' + startTime + '/' + endTime + '.json';
+    console.log(url);
     User.findByIdQ({_id: id})
       .then(function(user) {
         return client.requestResource(url, 'GET', user.accessToken, user.accessTokenSecret).then(function(results) {
           var total = JSON.parse(results[0])[qString][0].value;
-          res.send(JSON.stringify(total));
+          res.json({total:total});
         });
       })
       .fail(function(err) {
