@@ -28,7 +28,10 @@ module.exports = exports = {
       })
   },
   post : function(req, res, next) {
-    var $promise = Q.nbind(Battle.save, Battle);
+    var $promise = Q.nbind(Battle.create, Battle);
+    console.log('here');
+    console.log(req.body);
+    console.log(req.body.battle);
     $promise(req.body.battle)
       .then(function (id) {
         res.send(id);
