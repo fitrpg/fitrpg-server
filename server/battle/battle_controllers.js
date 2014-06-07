@@ -32,7 +32,7 @@ module.exports = exports = {
     console.log('here');
     console.log(req.body);
     console.log(req.body.battle);
-    $promise(req.body.battle)
+    $promise(req.body)
       .then(function (id) {
         res.send(id);
       })
