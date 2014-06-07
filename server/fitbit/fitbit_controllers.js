@@ -186,7 +186,7 @@ module.exports = exports = {
         // GET WORKOUTS AND CALCULATE THEM TO BE DEXTERITY/STRENGTH
         var today = new Date();
         var lastChecked = user.lastChecked || today;
-        if (lastChecked === today) { return user; } //we've already checked
+        if (lastChecked.yyyymmdd() === today.yyyymmdd()) { return user; } //we've already checked
         var datesArr = getDatesArray(lastChecked,today);
         var answerPromises = [];
         var num = datesArr.length-7 > 0 ? datesArr.length-7 : 0; //only check the last 7 days
