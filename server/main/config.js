@@ -1,12 +1,13 @@
 'use strict';
 
-var bodyParser      = require('body-parser'),
-    cookieParser    = require('cookie-parser'),
-    middle          = require('./middleware'),
-    mongoose        = require('mongoose-q')(), //mongoose-q then requires mongoose
-    morgan          = require('morgan'),
-    methodOverride  = require('method-override'),
-    session         = require('express-session');
+var bodyParser     = require('body-parser'),
+    cookieParser   = require('cookie-parser'),
+    middle         = require('./middleware'),
+    mongoose       = require('mongoose-q')(), //mongoose-q then requires mongoose
+    morgan         = require('morgan'),
+    methodOverride = require('method-override'),
+    session        = require('express-session'),
+    expressJwt     = require('express-jwt');
 
 mongoose.connect(process.env.DB_URL || 'mongodb://localhost/fitApp');
 /*
@@ -18,6 +19,7 @@ module.exports = exports = function (app, express,passport, routers) {
   app.use(cookieParser());
   app.use(morgan('dev'));
   app.use(bodyParser());
+  app.use(bodyParser.urlencoded());
   app.use(middle.cors);
   app.use(session({secret: process.env.SECRET || 'secret', maxAge: 360*5}));
   /*
@@ -31,14 +33,15 @@ module.exports = exports = function (app, express,passport, routers) {
   app.use(passport.session());
   app.use('/fitbit', routers.FitbitRouter);
   app.use('/jawbone', routers.JawboneRouter);
-  app.use('/users' , routers.UserRouter);
-  app.use('/solos' , routers.SoloRouter);
-  app.use('/groups', routers.GroupRouter);
-  app.use('/pastsolos' , routers.PastSoloRouter);
-  app.use('/pastgroups', routers.PastGroupRouter);
-  app.use('/items', routers.ItemRouter);
-  app.use('/battles', routers.BattleRouter);
-  app.use('/quests', routers.QuestRouter);
+  app.use('/api', expressJwt({secret: process.env.SECRET || 'secret'}))
+  app.use('/api/users' , routers.UserRouter);
+  app.use('/api/solos' , routers.SoloRouter);
+  app.use('/api/groups', routers.GroupRouter);
+  app.use('/api/pastsolos' , routers.PastSoloRouter);
+  app.use('/api/pastgroups', routers.PastGroupRouter);
+  app.use('/api/items', routers.ItemRouter);
+  app.use('/api/battles', routers.BattleRouter);
+  app.use('/api/quests', routers.QuestRouter);
   app.use(middle.logError);
   app.use(middle.handleError);
   app.use(methodOverride());

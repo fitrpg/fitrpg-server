@@ -1,7 +1,7 @@
 {
-  "name": "ionic-project",
+  "name": "FitRPG",
   "version": "1.0.0",
-  "description": "An Ionic project",
+  "description": "FitRPG",
   "scripts": {
     "predeploy": "npm install",
     "start": "node server/server.js"
@@ -23,6 +23,8 @@
     "passport": "^0.2.0",
     "passport-oauth": "*",
     "q": "^1.0.1",
-    "request": "^2.36.0"
+    "request": "^2.36.0",
+    "express-jwt": "^0.2.1",
+    "jsonwebtoken": "^0.4.0"
   }
 }
