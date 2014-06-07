@@ -15,9 +15,12 @@ var format = require('util').format;
 var mongoose = require('mongoose');
 
 
+// var FITBIT_CONSUMER_KEY = '8cda22173ee44a5bba066322ccd5ed34';
+// var FITBIT_CONSUMER_SECRET = '12beae92a6da44bab17335de09843bc4';
+
 var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
 var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
-var myClient = new FitbitApiClient(FITBIT_CONSUMER_KEY,FITBIT_CONSUMER_SECRET);
+//var myClient = new FitbitApiClient(FITBIT_CONSUMER_KEY,FITBIT_CONSUMER_SECRET);
 
 var userId;
 
@@ -53,6 +56,10 @@ module.exports = exports = {
       });
   }),
 
+  sendBrokenResponse: function (req, res, next) {
+    console.log('gets to the broken response');
+    res.send(200);
+  },
   getTempToken: function (req, res, next) {
     //Nothing happens here because it redirects to the Fitbit site
   },
@@ -108,6 +115,7 @@ module.exports = exports = {
           user.accessTokenSecret = tokenSecret;
         }
         dateCreated = user.createdAt.yyyymmdd();
+        console.log(dateCreated);
         user.lastActive = user.lastActive || new Date(); //if new date this means they are a first time user
         // GET PROFILE DATA
         return client.requestResource('/profile.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
@@ -133,6 +141,9 @@ module.exports = exports = {
       .then(function(user) {
         // GET STEPS AND CONVERT TO EXPERIENCE/LEVEL
         return client.requestResource('/activities/steps/date/'+dateCreated+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
+          console.log('gets here');
+          console.log(results[0]);
+          user.attributes.experience = user.attributes.experience || 0;
           user.fitbit.experience = utils.calcCumValue(JSON.parse(results[0])['activities-steps']);
           user.attributes.level = utils.calcLevel(user.fitbit.experience+user.attributes.experience, user.attributes.level);
           return user;
@@ -161,13 +172,15 @@ module.exports = exports = {
       })
       .then(function(user) {
         // GET SLEEP EFFICIENCY FROM LAST CHECK AND USE IT TO CALC SLEEP HP RECOVERY, THIS NUMBER ONLY USED ONCE
-        if (user.lastChecked && user.lastChecked !== new Date()) {
+        if (!user.lastChecked) { //first if there's no lastChecked, we just set it to today
+          user.lastChecked = new Date()
+        } else if (user.lastChecked.yyyymmdd() === new Date().yyyymmdd()) { //if there is one and it's equal to today, we've checked already
           var lastChecked = user.lastChecked;
-        } else {
-          return user; // we've already checked the user's sleep today
-        }
-        return client.requestResource('/sleep/efficiency/date/'+lastChecked.yyyymmdd()+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
-          user.fitbit.HPRecov = utils.calcHpRecov(JSON.parse(results[0])['sleep-efficiency']);
+          return user;
+        } 
+        var hpURL = '/sleep/minutesAsleep/date/'+lastChecked.yyyymmdd()+'/today.json'; 
+        return client.requestResource(hpURL,'GET',user.accessToken,user.accessTokenSecret).then(function(results){
+          user.fitbit.HPRecov = utils.calcHpRecov(JSON.parse(results[0])['sleep-minutesAsleep']);
           return user;
         });
       })
@@ -200,6 +213,7 @@ module.exports = exports = {
         return saveInPromise(user);
       })
       .fail(function(err) {
+        console.log(err);
       })
       .done();
 
@@ -223,7 +237,6 @@ module.exports = exports = {
     var endDate   = req.params.endDate;
     var qString   = type + '-' + activity;
     var url = '/' + type + '/' + activity + '/date/' + startDate + '/' + endDate + '.json';
-    console.log(url);
     User.findByIdQ({_id: id})
       .then(function(user) {
         return client.requestResource(url, 'GET', user.accessToken, user.accessTokenSecret).then(function(results) {
