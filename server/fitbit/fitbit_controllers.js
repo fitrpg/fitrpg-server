@@ -141,8 +141,6 @@ module.exports = exports = {
       .then(function(user) {
         // GET STEPS AND CONVERT TO EXPERIENCE/LEVEL
         return client.requestResource('/activities/steps/date/'+dateCreated+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
-          console.log('gets here');
-          console.log(results[0]);
           user.attributes.experience = user.attributes.experience || 0;
           user.fitbit.experience = utils.calcCumValue(JSON.parse(results[0])['activities-steps']);
           user.attributes.level = utils.calcLevel(user.fitbit.experience+user.attributes.experience, user.attributes.level);
@@ -178,7 +176,7 @@ module.exports = exports = {
           var lastChecked = user.lastChecked;
           return user;
         } 
-        var hpURL = '/sleep/minutesAsleep/date/'+lastChecked.yyyymmdd()+'/today.json'; 
+        var hpURL = '/sleep/minutesAsleep/date/'+user.lastChecked.yyyymmdd()+'/today.json'; 
         return client.requestResource(hpURL,'GET',user.accessToken,user.accessTokenSecret).then(function(results){
           user.fitbit.HPRecov = utils.calcHpRecov(JSON.parse(results[0])['sleep-minutesAsleep']);
           return user;
