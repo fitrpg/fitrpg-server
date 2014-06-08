@@ -3,8 +3,9 @@
 var User = require('../user/user_model.js');
 var FitbitStrategy = require('./fitbit-passport.js');
 var FitbitApiClient = require('fitbit-node');
-var utils = require('./fitbit_utility.js').util;
+var jwt = require('jsonwebtoken');
 var Q = require("q");
+var utils = require('./fitbit_utility.js').util;
 var fitIds = require('./fitbit_activity_ids.js');
 
 // For processing Fitbit's push notification in the format of multipart/form (not bodyparsed :\)
@@ -58,7 +59,9 @@ module.exports = exports = {
 
   getOauthToken: function (req, res, next) {
     var userToken = req.query['oauth_token']; //remember the user should save this, db needs do nothing with it
-    res.redirect('?oauth_token=' + req.query['oauth_token']+'&userId='+userId); //this should never be viewed by the user, just ending the res, change to res.end later
+    var month = 43829;
+    var server_token = jwt.sign({id: userId}, process.env.SECRET || "secret", { expiresInMinutes: month });
+    res.redirect('?oauth_token=' + server_token + '&userId=' + userId); //this should never be viewed by the user, just ending the res, change to res.end later
   },
 
   subscribeUser: function(fitbitToken,fitbitSecret,id) { //subscribe this user so we get push notifications
