@@ -42,6 +42,7 @@ module.exports = exports = function (app, express,passport, routers) {
   app.use('/api/items', routers.ItemRouter);
   app.use('/api/battles', routers.BattleRouter);
   app.use('/api/quests', routers.QuestRouter);
+  app.use('/feedback', routers.FeedbackRouter);
   app.use(middle.logError);
   app.use(middle.handleError);
   app.use(methodOverride());

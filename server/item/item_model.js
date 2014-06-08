@@ -17,7 +17,8 @@ var ItemSchema = new mongoose.Schema({
     endurance  : Number,
     dexterity  : Number,
     consumable : Boolean,
-    rare       : Boolean
+    rare       : Boolean,
+    description: String
 });
 
 module.exports = exports = mongoose.model('items', ItemSchema);

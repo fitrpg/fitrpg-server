@@ -1,37 +1,36 @@
 'use strict'
 
-var Battle = require('./battle_model.js');
+var Feedback = require('./feedback_model.js');
 var Q     = require('q');
 var url = require('url');
 
 module.exports = exports = {
   get : function(req, res, next) {
-    var $promise = Q.nbind(Battle.findById, Battle);
+    var $promise = Q.nbind(Feedback.findById, Feedback);
     $promise(req.params.id)
-      .then(function (battle) {
-        res.json(battle);
+      .then(function (feedback) {
+        res.json(feedback);
       })
       .fail(function (reason) {
         next(reason);
       })
   },
-  getBattles : function(req, res, next) {
-    var $promise = Q.nbind(Battle.find, Battle);
+  getFeedback : function(req, res, next) {
+    var $promise = Q.nbind(Feedback.find, Feedback);
     var url_parts = url.parse(req.url, true);
     var query = url_parts.query;
     $promise(query)
-      .then(function (battles) {
-        res.json(battles);
+      .then(function (feedbacks) {
+        res.json(feedbacks);
       })
       .fail(function (reason){
         next(reason);
       })
   },
   post : function(req, res, next) {
-    var $promise = Q.nbind(Battle.create, Battle);
-    console.log('here');
+    var $promise = Q.nbind(Feedback.create, Feedback);
     console.log(req.body);
-    console.log(req.body.battle);
+    console.log(req.body.params);
     $promise(req.body)
       .then(function (id) {
         res.send(id);

@@ -16,6 +16,7 @@ var PastGroupRouter = express.Router();
 var PastSoloRouter  = express.Router();
 var FitbitRouter    = express.Router();
 var JawboneRouter   = express.Router();
+var FeedbackRouter  = express.Router();
 var routers         = {};
 
 routers.BattleRouter     = BattleRouter;
@@ -28,6 +29,7 @@ routers.PastGroupRouter  = PastGroupRouter;
 routers.PastSoloRouter   = PastSoloRouter;
 routers.JawboneRouter    = JawboneRouter;
 routers.FitbitRouter     = FitbitRouter;
+routers.FeedbackRouter   = FeedbackRouter;
 
 require('./config.js')(app, express, passport, routers);
 require('../user/user_routes.js')(UserRouter);
@@ -40,5 +42,6 @@ require('../pastSolo/past_solo_routes.js')(PastSoloRouter);
 require('../pastGroup/past_group_routes.js')(PastGroupRouter);
 require('../fitbit/fitbit_routes.js')(FitbitRouter, passport); // investigate how to not to pass in passport twice
 require('../jawbone/jawbone_routes.js')(JawboneRouter, passport);
+require('../feedback/feedback_routes.js')(FeedbackRouter);
 
 module.exports = exports = app;
