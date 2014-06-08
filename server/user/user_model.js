@@ -15,7 +15,7 @@ var UserSchema = new mongoose.Schema({
   characterClass : String,
   createdAt  : Date,
   attributes : {
-    gold       : {type: Number, default: 0},
+    gold       : {type: Number, default: 200},
     experience : {type: Number, default: 0},
     vitality   : {type: Number, default: 20},
     strength   : {type: Number, default: 20},
