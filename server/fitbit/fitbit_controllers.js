@@ -240,8 +240,14 @@ module.exports = exports = {
     User.findByIdQ({_id: id})
       .then(function(user) {
         return client.requestResource(url, 'GET', user.accessToken, user.accessTokenSecret).then(function(results) {
-          var total = utils.calcCumValue(JSON.parse(results[0])[qString]);
-          res.json({total:total});
+          if (activity === 'distance') {
+            console.log(results[0]);
+            var total = utils.calcDecValue(JSON.parse(results[0])[qString]);
+            res.json({total:total});
+          } else {
+            var total = utils.calcCumValue(JSON.parse(results[0])[qString]);
+            res.json({total:total});
+          }
         });
       })
       .fail(function(err) {
@@ -265,8 +271,14 @@ module.exports = exports = {
     User.findByIdQ({_id: id})
       .then(function(user) {
         return client.requestResource(url, 'GET', user.accessToken, user.accessTokenSecret).then(function(results) {
-          var total = JSON.parse(results[0])[qString][0].value;
-          res.json({total:total});
+          if (activity === 'distance') { //decimals!
+            var total = (JSON.parse(results[0])[qString][0].value*0.62137).toFixed(2); //convert to miles
+            res.json({total:total});
+          } else {
+            var total = JSON.parse(results[0])[qString][0].value;
+            console.log(results[0]);
+            res.json({total:total});
+          }
         });
       })
       .fail(function(err) {

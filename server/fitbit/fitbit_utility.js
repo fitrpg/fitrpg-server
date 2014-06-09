@@ -79,6 +79,16 @@ exports.util = {
     return experience;
   },
 
+  // for distance which is in float values (as well as km we want to convert to miles)
+  calcDecValue: function(array) {
+    var total = 0;
+    for (var i=0; i<array.length; i++) {
+      total += parseFloat(array[i].value);
+    }
+    total = (0.62137*total).toFixed(2);
+    return total;
+  },
+
   calcSkillPoints: function(currSkillPts, lvl, currLvl) {
     return currSkillPts + (lvl-currLvl)*5;
   }
