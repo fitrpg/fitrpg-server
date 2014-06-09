@@ -187,7 +187,6 @@ module.exports = exports = {
           if (user.fitbit.HPRecov > 0) {
             user.HPChecker.foundSleep = true;
           }
-          console.log('user!',user);
           return user;
         });
       })
