@@ -75,6 +75,10 @@ var UserSchema = new mongoose.Schema({
   profile        : {
     displayName  : String,
     avatar       : String
+  },
+  HPChecker      : {
+    dateLastChecked: Date,
+    foundSleep     : {type: Boolean, default: false} 
   }
 
 });
