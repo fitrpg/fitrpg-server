@@ -14,10 +14,6 @@ var format = require('util').format;
 
 var mongoose = require('mongoose');
 
-
-// var FITBIT_CONSUMER_KEY = '8cda22173ee44a5bba066322ccd5ed34';
-// var FITBIT_CONSUMER_SECRET = '12beae92a6da44bab17335de09843bc4';
-
 var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
 var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
 var myClient = new FitbitApiClient(FITBIT_CONSUMER_KEY,FITBIT_CONSUMER_SECRET);
@@ -171,16 +167,27 @@ module.exports = exports = {
         });
       })
       .then(function(user) {
-        // GET SLEEP EFFICIENCY FROM LAST CHECK AND USE IT TO CALC SLEEP HP RECOVERY, THIS NUMBER ONLY USED ONCE
-        if (!user.lastChecked) { //first if there's no lastChecked, we just set it to today
-          user.lastChecked = new Date()
-        } else if (user.lastChecked.yyyymmdd() === new Date().yyyymmdd()) { //if there is one and it's equal to today, we've checked already
-          var lastChecked = user.lastChecked;
+        // GET TIME ASLEEP FROM LAST CHECK AND USE IT TO CALC SLEEP HP RECOVERY, THIS NUMBER ONLY USED ONCE
+        var HPChecker = user.HPChecker;
+        var today = (new Date()).yyyymmdd();
+        var dateLastChecked = HPChecker.dateLastChecked || user.createdAt;
+        var hpLastChecked = dateLastChecked.yyyymmdd();
+        // if we didn't check yet before today, we reset foundSleep to false
+        if (hpLastChecked !== today) {
+          HPChecker.foundSleep = false;
+        }
+        // if it's true and the dates do match then we don't do anything bc we've found sleep today
+        if (hpLastChecked === today && HPChecker.foundSleep === true) {
           return user;
-        } 
-        var hpURL = '/sleep/minutesAsleep/date/'+user.lastChecked.yyyymmdd()+'/today.json'; 
+        }
+        user.HPChecker.dateLastChecked = new Date(); //set the new lastchecked date to today 
+        var hpURL = '/sleep/minutesAsleep/date/'+hpLastChecked+'/today.json'; 
         return client.requestResource(hpURL,'GET',user.accessToken,user.accessTokenSecret).then(function(results){
           user.fitbit.HPRecov = utils.calcHpRecov(JSON.parse(results[0])['sleep-minutesAsleep']);
+          if (user.fitbit.HPRecov > 0) {
+            user.HPChecker.foundSleep = true;
+          }
+          console.log('user!',user);
           return user;
         });
       })
