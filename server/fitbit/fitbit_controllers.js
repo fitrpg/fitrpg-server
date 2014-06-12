@@ -17,6 +17,7 @@ var mongoose = require('mongoose');
 var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
 var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
 
+
 var myClient = new FitbitApiClient(FITBIT_CONSUMER_KEY,FITBIT_CONSUMER_SECRET);
 
 var userId;
@@ -141,11 +142,24 @@ module.exports = exports = {
           return user;
         });
       })
+      // .then(function(user) {
+      //   // GET STEPS AND CONVERT TO EXPERIENCE/LEVEL
+      //   return client.requestResource('/activities/steps/date/'+dateCreated+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
+      //     user.attributes.experience = user.attributes.experience || 0;
+      //     user.fitbit.experience = utils.calcCumValue(JSON.parse(results[0])['activities-steps']);
+      //     var level = utils.calcLevel(user.fitbit.experience+user.attributes.experience, user.attributes.level);
+      //     user.attributes.skillPts = utils.calcSkillPoints(user.attributes.skillPts, level, user.attributes.level);
+      //     user.attributes.level = level;
+      //     console.log("user fitbit experience", user.fitbit.experience);
+      //     console.log("user level", user.attributes.level);
+      //     return user;
+      //   });
+      // })
       .then(function(user) {
-        // GET STEPS AND CONVERT TO EXPERIENCE/LEVEL
-        return client.requestResource('/activities/steps/date/'+dateCreated+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
+        // GET ACTUAL STEPS, NOT LOGGED ONES
+        return client.requestResource('/activities/tracker/steps/date/'+dateCreated+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
           user.attributes.experience = user.attributes.experience || 0;
-          user.fitbit.experience = utils.calcCumValue(JSON.parse(results[0])['activities-steps']);
+          user.fitbit.experience = utils.calcCumValue(JSON.parse(results[0])['activities-tracker-steps']);
           var level = utils.calcLevel(user.fitbit.experience+user.attributes.experience, user.attributes.level);
           user.attributes.skillPts = utils.calcSkillPoints(user.attributes.skillPts, level, user.attributes.level);
           user.attributes.level = level;
@@ -161,8 +175,9 @@ module.exports = exports = {
       })
       // GET DISTANCE AND CONVERT TO ENDURANCE
       .then(function(user) {
-        return client.requestResource('/activities/distance/date/'+dateCreated+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
-          user.fitbit.endurance = utils.calcEndurance(JSON.parse(results[0])['activities-distance']);
+        return client.requestResource('/activities/tracker/distance/date/'+dateCreated+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
+          user.fitbit.endurance = utils.calcEndurance(JSON.parse(results[0])['activities-tracker-distance']);
+          console.log(user.fitbit.endurance);
           return user;
         });
       })
@@ -205,17 +220,18 @@ module.exports = exports = {
         var datesArr = getDatesArray(lastChecked,today);
         var answerPromises = [];
         var num = datesArr.length-7 > 0 ? datesArr.length-7 : 0; //only check the last 7 days
-        user.lastChecked = new Date(); //this importantly sets our last checked variable
+        user.lastChecked = today; //this importantly sets our last checked variable
         for (var i = datesArr.length-1; i >= num; i--) {
-          answerPromises.push(client.requestResource('/activities/date/'+datesArr[i]+ '.json','GET',user.accessToken,user.accessTokenSecret));
+          var a = client.requestResource('/activities/date/'+datesArr[i]+ '.json','GET',user.accessToken,user.accessTokenSecret);
+          answerPromises.push(a);
         }
         return Q.all(answerPromises)
           .then(function(results) {
             var dexterity = 0;
             var strength = 0;
             for (var i = 0; i<results.length;i++) {
-              dexterity += utils.calcStrDex(JSON.parse(results[i][0])['activities'],fitIds.dexterityIds);
-              strength += utils.calcStrDex(JSON.parse(results[i][0])['activities'],fitIds.strengthIds);
+              dexterity += utils.calcStrDex(JSON.parse(results[i][0])['activities'] ,fitIds.dexterityIds);
+              strength += utils.calcStrDex(JSON.parse(results[i][0])['activities'] ,fitIds.strengthIds);
             }
             user.fitbit.dexterity = user.fitbit.dexterity + dexterity;
             user.fitbit.strength = user.fitbit.strength + strength;

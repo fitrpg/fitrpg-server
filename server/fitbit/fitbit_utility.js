@@ -29,8 +29,8 @@ exports.util = {
     if (array.length === 0) {return 0};
     // assumes the array is for only 1 days activities
     for (var i=0; i<array.length; i++) {
-      for (var j=0; j<fitIds.ids.length; j++) {
-        if (array[i].activityId === fitIds.ids[j]) {
+      for (var j=0; j<fitIds.length; j++) {
+        if (array[i].activityId === fitIds[j]) {
           total += Math.floor(parseInt(array[i].duration)/(minPerPoint*secs*msecs));
         }
       }
