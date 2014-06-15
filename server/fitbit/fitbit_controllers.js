@@ -14,9 +14,10 @@ var format = require('util').format;
 
 var mongoose = require('mongoose');
 
-var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
-var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
-
+// var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
+// var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
+var FITBIT_CONSUMER_KEY = '8cda22173ee44a5bba066322ccd5ed34';
+var FITBIT_CONSUMER_SECRET = '12beae92a6da44bab17335de09843bc4';
 
 var myClient = new FitbitApiClient(FITBIT_CONSUMER_KEY,FITBIT_CONSUMER_SECRET);
 
@@ -177,7 +178,6 @@ module.exports = exports = {
       .then(function(user) {
         return client.requestResource('/activities/tracker/distance/date/'+dateCreated+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
           user.fitbit.endurance = utils.calcEndurance(JSON.parse(results[0])['activities-tracker-distance']);
-          console.log(user.fitbit.endurance);
           return user;
         });
       })
@@ -214,13 +214,15 @@ module.exports = exports = {
       })
       .then(function(user) {
         // GET WORKOUTS AND CALCULATE THEM TO BE DEXTERITY/STRENGTH
-        var today = new Date();
-        var lastChecked = user.lastChecked || today;
-        if (lastChecked.yyyymmdd() === today.yyyymmdd()) { return user; } //we've already checked
-        var datesArr = getDatesArray(lastChecked,today);
+        var lastChecked = user.strLastChecked || user.createdAt.subtractDays(1);
+        var yesterday = (new Date()).subtractDays(1);
+        var datesArr = getDatesArray(new Date(lastChecked),yesterday);
+        if (datesArr.length === 0) {
+          return user;
+        }
         var answerPromises = [];
         var num = datesArr.length-7 > 0 ? datesArr.length-7 : 0; //only check the last 7 days
-        user.lastChecked = today; //this importantly sets our last checked variable
+        user.strLastChecked = datesArr[datesArr.length-1]; //this importantly sets our last checked variable
         for (var i = datesArr.length-1; i >= num; i--) {
           var a = client.requestResource('/activities/date/'+datesArr[i]+ '.json','GET',user.accessToken,user.accessTokenSecret);
           answerPromises.push(a);
@@ -328,9 +330,16 @@ Date.prototype.addDays = function(days) {
    return dat;
 }
 
+Date.prototype.subtractDays = function(days) {
+   var dat = new Date(this.valueOf())
+   dat.setDate(dat.getDate() - days);
+   return dat;
+}
+
 var getDatesArray = function (startDate, stopDate) {
   var dateArray = new Array();
-  var currentDate = startDate;
+  var currentDate = startDate.addDays(1);
+  var stopDate = stopDate.addDays(1);
   while (currentDate <= stopDate) {
     var fitbitCurDate = currentDate.yyyymmdd();
     dateArray.push(fitbitCurDate);
