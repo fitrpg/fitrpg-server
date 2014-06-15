@@ -17,7 +17,6 @@ var mongoose = require('mongoose');
 var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
 var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
 
-
 var myClient = new FitbitApiClient(FITBIT_CONSUMER_KEY,FITBIT_CONSUMER_SECRET);
 
 var userId;
@@ -142,19 +141,6 @@ module.exports = exports = {
           return user;
         });
       })
-      // .then(function(user) {
-      //   // GET STEPS AND CONVERT TO EXPERIENCE/LEVEL
-      //   return client.requestResource('/activities/steps/date/'+dateCreated+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
-      //     user.attributes.experience = user.attributes.experience || 0;
-      //     user.fitbit.experience = utils.calcCumValue(JSON.parse(results[0])['activities-steps']);
-      //     var level = utils.calcLevel(user.fitbit.experience+user.attributes.experience, user.attributes.level);
-      //     user.attributes.skillPts = utils.calcSkillPoints(user.attributes.skillPts, level, user.attributes.level);
-      //     user.attributes.level = level;
-      //     console.log("user fitbit experience", user.fitbit.experience);
-      //     console.log("user level", user.attributes.level);
-      //     return user;
-      //   });
-      // })
       .then(function(user) {
         // GET ACTUAL STEPS, NOT LOGGED ONES
         return client.requestResource('/activities/tracker/steps/date/'+dateCreated+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
@@ -177,7 +163,6 @@ module.exports = exports = {
       .then(function(user) {
         return client.requestResource('/activities/tracker/distance/date/'+dateCreated+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
           user.fitbit.endurance = utils.calcEndurance(JSON.parse(results[0])['activities-tracker-distance']);
-          console.log(user.fitbit.endurance);
           return user;
         });
       })
@@ -214,13 +199,15 @@ module.exports = exports = {
       })
       .then(function(user) {
         // GET WORKOUTS AND CALCULATE THEM TO BE DEXTERITY/STRENGTH
-        var today = new Date();
-        var lastChecked = user.lastChecked || today;
-        if (lastChecked.yyyymmdd() === today.yyyymmdd()) { return user; } //we've already checked
-        var datesArr = getDatesArray(lastChecked,today);
+        var lastChecked = user.strLastChecked || user.createdAt.subtractDays(1);
+        var yesterday = (new Date()).subtractDays(1);
+        var datesArr = getDatesArray(new Date(lastChecked),yesterday);
+        if (datesArr.length === 0) {
+          return user;
+        }
         var answerPromises = [];
         var num = datesArr.length-7 > 0 ? datesArr.length-7 : 0; //only check the last 7 days
-        user.lastChecked = today; //this importantly sets our last checked variable
+        user.strLastChecked = datesArr[datesArr.length-1]; //this importantly sets our last checked variable
         for (var i = datesArr.length-1; i >= num; i--) {
           var a = client.requestResource('/activities/date/'+datesArr[i]+ '.json','GET',user.accessToken,user.accessTokenSecret);
           answerPromises.push(a);
@@ -328,9 +315,16 @@ Date.prototype.addDays = function(days) {
    return dat;
 }
 
+Date.prototype.subtractDays = function(days) {
+   var dat = new Date(this.valueOf())
+   dat.setDate(dat.getDate() - days);
+   return dat;
+}
+
 var getDatesArray = function (startDate, stopDate) {
   var dateArray = new Array();
-  var currentDate = startDate;
+  var currentDate = startDate.addDays(1);
+  var stopDate = stopDate.addDays(1);
   while (currentDate <= stopDate) {
     var fitbitCurDate = currentDate.yyyymmdd();
     dateArray.push(fitbitCurDate);
