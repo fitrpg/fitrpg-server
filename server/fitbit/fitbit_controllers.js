@@ -141,19 +141,6 @@ module.exports = exports = {
           return user;
         });
       })
-      // .then(function(user) {
-      //   // GET STEPS AND CONVERT TO EXPERIENCE/LEVEL
-      //   return client.requestResource('/activities/steps/date/'+dateCreated+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
-      //     user.attributes.experience = user.attributes.experience || 0;
-      //     user.fitbit.experience = utils.calcCumValue(JSON.parse(results[0])['activities-steps']);
-      //     var level = utils.calcLevel(user.fitbit.experience+user.attributes.experience, user.attributes.level);
-      //     user.attributes.skillPts = utils.calcSkillPoints(user.attributes.skillPts, level, user.attributes.level);
-      //     user.attributes.level = level;
-      //     console.log("user fitbit experience", user.fitbit.experience);
-      //     console.log("user level", user.attributes.level);
-      //     return user;
-      //   });
-      // })
       .then(function(user) {
         // GET ACTUAL STEPS, NOT LOGGED ONES
         return client.requestResource('/activities/tracker/steps/date/'+dateCreated+'/today.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
