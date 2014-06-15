@@ -16,13 +16,12 @@ module.exports = exports = {
       })
   },
   getFeedback : function(req, res, next) {
-    console.log('GETS HERE!!');
     var $promise = Q.nbind(Feedback.find, Feedback);
     var url_parts = url.parse(req.url, true);
     var query = url_parts.query;
     $promise(query)
       .then(function (feedbacks) {
-        res.json('TEST');
+        res.json(feedbacks);
       })
       .fail(function (reason){
         next(reason);
