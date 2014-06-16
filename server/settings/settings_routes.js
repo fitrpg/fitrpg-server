@@ -1,6 +1,6 @@
 'use strict'
 
-var controller = require('./settings_controllers.js');
+var controller = require('./settings_controller.js');
 
 module.exports = exports = function(router) {
   router.route('/')
