@@ -6,7 +6,7 @@ var url = require('url');
 
 module.exports = exports = {
   get : function(req, res, next) {
-    var $promise = Q.nbind(Settings.find, Settings);
+    var $promise = Q.nbind(Settings.findById, Settings);
     $promise(req.params.id)
       .then(function (settings) {
         res.json(settings);
