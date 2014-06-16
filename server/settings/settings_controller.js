@@ -1,36 +1,34 @@
 'use strict'
 
-var Feedback = require('./feedback_model.js');
+var Settings = require('./settings_model.js');
 var Q     = require('q');
 var url = require('url');
 
 module.exports = exports = {
   get : function(req, res, next) {
-    var $promise = Q.nbind(Feedback.findById, Feedback);
+    var $promise = Q.nbind(Settings.findById, Settings);
     $promise(req.params.id)
-      .then(function (feedback) {
-        res.json(feedback);
+      .then(function (settings) {
+        res.json(settings);
       })
       .fail(function (reason) {
         next(reason);
       })
   },
-  getFeedback : function(req, res, next) {
-    var $promise = Q.nbind(Feedback.find, Feedback);
+  getSettings : function(req, res, next) {
+    var $promise = Q.nbind(Settings.find, Settings);
     var url_parts = url.parse(req.url, true);
     var query = url_parts.query;
     $promise(query)
-      .then(function (feedbacks) {
-        res.json(feedbacks);
+      .then(function (settings) {
+        res.json(settings);
       })
       .fail(function (reason){
         next(reason);
       })
   },
   post : function(req, res, next) {
-    var $promise = Q.nbind(Feedback.create, Feedback);
-    console.log(req.body);
-    console.log(req.body.params);
+    var $promise = Q.nbind(Settings.create, Settings);
     $promise(req.body)
       .then(function (id) {
         res.send(id);

@@ -201,14 +201,9 @@ module.exports = exports = {
       .then(function(user) {
         // GET WORKOUTS AND CALCULATE THEM TO BE DEXTERITY/STRENGTH
         var lastChecked = user.stringLastChecked || user.createdAt.subtractDays(1);
-        console.log('test',lastChecked);
-        console.log(user.createdAt,user.createdAt.subtractDays(1));
         var yesterday = (new Date()).subtractDays(1);
-        console.log(yesterday);
         var datesArr = getDatesArray(new Date(lastChecked),yesterday);
-        console.log(datesArr);
         if (yesterday.yyyymmdd() === lastChecked) {
-          console.log('checked already');
           return user;
         }
         var answerPromises = [];
