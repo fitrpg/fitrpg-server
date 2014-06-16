@@ -21,7 +21,7 @@ module.exports = exports = {
     var query = url_parts.query;
     $promise(query)
       .then(function (feedbacks) {
-        res.json(feedbacks);
+        res.json('test');
       })
       .fail(function (reason){
         next(reason);
