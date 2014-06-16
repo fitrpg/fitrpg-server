@@ -17,6 +17,7 @@ var mongoose = require('mongoose');
 var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
 var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
 
+
 var myClient = new FitbitApiClient(FITBIT_CONSUMER_KEY,FITBIT_CONSUMER_SECRET);
 
 var userId;
@@ -199,15 +200,20 @@ module.exports = exports = {
       })
       .then(function(user) {
         // GET WORKOUTS AND CALCULATE THEM TO BE DEXTERITY/STRENGTH
-        var lastChecked = user.strLastChecked || user.createdAt.subtractDays(1);
+        var lastChecked = user.stringLastChecked || user.createdAt.subtractDays(1);
+        console.log('test',lastChecked);
+        console.log(user.createdAt,user.createdAt.subtractDays(1));
         var yesterday = (new Date()).subtractDays(1);
+        console.log(yesterday);
         var datesArr = getDatesArray(new Date(lastChecked),yesterday);
-        if (datesArr.length === 0) {
+        console.log(datesArr);
+        if (yesterday.yyyymmdd() === lastChecked) {
+          console.log('checked already');
           return user;
         }
         var answerPromises = [];
         var num = datesArr.length-7 > 0 ? datesArr.length-7 : 0; //only check the last 7 days
-        user.strLastChecked = datesArr[datesArr.length-1]; //this importantly sets our last checked variable
+        user.stringLastChecked = datesArr[datesArr.length-1]; //this importantly sets our last checked variable
         for (var i = datesArr.length-1; i >= num; i--) {
           var a = client.requestResource('/activities/date/'+datesArr[i]+ '.json','GET',user.accessToken,user.accessTokenSecret);
           answerPromises.push(a);
@@ -324,7 +330,7 @@ Date.prototype.subtractDays = function(days) {
 var getDatesArray = function (startDate, stopDate) {
   var dateArray = new Array();
   var currentDate = startDate.addDays(1);
-  var stopDate = stopDate.addDays(1);
+  var stopDate = stopDate;
   while (currentDate <= stopDate) {
     var fitbitCurDate = currentDate.yyyymmdd();
     dateArray.push(fitbitCurDate);

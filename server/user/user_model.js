@@ -6,7 +6,7 @@ var UserSchema = new mongoose.Schema({
   _id                : String,
   accessToken        : String,
   accessTokenSecret  : String,
-  strLastChecked     : String,
+  stringLastChecked     : String,
   lastChecked        : Date, // the last time we pulled data from fitbit or jawbone
   needsUpdate        : {type: Boolean, default: false},
   provider           : String,
