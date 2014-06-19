@@ -76,7 +76,7 @@ module.exports = exports = {
 
   pushNotification: function(req,res,next) {
    
-
+    console.log('runiiiing');
     User.findQ()
       .then(function(users) {
         console.log('num users', users.length);
