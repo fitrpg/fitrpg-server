@@ -81,7 +81,7 @@ module.exports = exports = {
       .then(function(users) {
         console.log('num users', users.length);
         for (var i = 0; i<users.length;i++) {
-          exports.subscribeUser(user.accessToken,user.accessTokenSecret,user._id);
+          exports.subscribeUser(users[i].accessToken,users[i].accessTokenSecret,users[i]._id);
         }
       })
       .fail(function(err) {
