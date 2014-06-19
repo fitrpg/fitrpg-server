@@ -75,10 +75,9 @@ module.exports = exports = {
   },
 
   pushNotification: function(req,res,next) {
-    // res.set('Content-Type', 'application/json');
-    // res.send(204);
+   
 
-    User.find()
+    User.findQ()
       .then(function(users) {
         console.log('num users', users.length);
         for (var i = 0; i<users.length;i++) {
@@ -89,6 +88,9 @@ module.exports = exports = {
         console.log(err);
       })
       .done();
+
+       res.set('Content-Type', 'application/json');
+    res.send(204);
     // work on this later to read fitbit subscription stuff
     // var form = new multiparty.Form();
     // form.on('error', next);
