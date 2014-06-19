@@ -75,26 +75,26 @@ module.exports = exports = {
   },
 
   pushNotification: function(req,res,next) {
-    res.set('Content-Type', 'application/json');
-    res.send(204);
+    // res.set('Content-Type', 'application/json');
+    // res.send(204);
 
     // work on this later to read fitbit subscription stuff
-    // var form = new multiparty.Form();
-    // form.on('error', next);
-    // form.on('part', function(part) {
-    //   part.on('data', function(chunk) {
-    //     console.log('got %d bytes of data, bitches.', chunk.length, chunk);
-    //   });
+    var form = new multiparty.Form();
+    form.on('error', next);
+    form.on('part', function(part) {
+      part.on('data', function(chunk) {
+        console.log('got %d bytes of data, bitches.', chunk.length, chunk,chunk.toString());
+      });
+    });
+    // form.on('file', function(part, file) {
+    //   console.log("FILE YXY", part, file);
     // });
-    // // form.on('file', function(part, file) {
-    // //   console.log("FILE YXY", part, file);
-    // // });
-    // form.on('close', function(){
-    //   console.log('done');
-    //   res.set('Content-Type', 'application/json');
-    //   res.send(204);
-    // });
-    // form.parse(req);
+    form.on('close', function(){
+      console.log('done');
+      res.set('Content-Type', 'application/json');
+      res.send(204);
+    });
+    form.parse(req);
   },
 
   retrieveData: function(req,res,next) {
