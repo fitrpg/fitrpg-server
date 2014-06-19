@@ -76,24 +76,26 @@ module.exports = exports = {
 
   pushNotification: function(req,res,next) {
 
-    //work on this later to read fitbit subscription stuff
-    console.log('request',req);
-    var form = new multiparty.Form();
-    form.on('error', next);
-    form.on('part', function(part) {
-      part.on('data', function(chunk) {
-        console.log('got %d bytes of data, bitches.', chunk.length, chunk,chunk.toString());
-      });
-    });
-    // form.on('file', function(part, file) {
-    //   console.log("FILE YXY", part, file);
-    // });
-    form.on('close', function(){
-      console.log('done');
-      res.set('Content-Type', 'application/json');
-      res.send(204);
-    });
-    form.parse(req);
+    console.log('request',req.body);
+    var users = req.body;
+    for (var j = 0; j < users.length; j++ ) {
+      (function(i) {
+        User.findByIdQ({_id:users[i].ownerId})
+          .then(function(user) {
+            user.needsUpdate = true;
+            console.log('user',user);
+            return user;
+          })
+          .then(function(user) {
+            return saveInPromise(user);
+          })
+          .fail(function(err) {
+            console.log(err);
+          })
+          .done();
+      }(j));
+    }
+    
     res.set('Content-Type', 'application/json');
     res.send(204);
   },
