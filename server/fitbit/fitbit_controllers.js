@@ -75,39 +75,27 @@ module.exports = exports = {
   },
 
   pushNotification: function(req,res,next) {
-   
-    console.log('runiiiing');
-    User.findQ()
-      .then(function(users) {
-        console.log('num users', users.length);
-        for (var i = 0; i<users.length;i++) {
-          exports.subscribeUser(users[i].accessToken,users[i].accessTokenSecret,users[i]._id);
-        }
-      })
-      .fail(function(err) {
-        console.log(err);
-      })
-      .done();
 
-       res.set('Content-Type', 'application/json');
+    //work on this later to read fitbit subscription stuff
+    console.log('request',req);
+    var form = new multiparty.Form();
+    form.on('error', next);
+    form.on('part', function(part) {
+      part.on('data', function(chunk) {
+        console.log('got %d bytes of data, bitches.', chunk.length, chunk,chunk.toString());
+      });
+    });
+    // form.on('file', function(part, file) {
+    //   console.log("FILE YXY", part, file);
+    // });
+    form.on('close', function(){
+      console.log('done');
+      res.set('Content-Type', 'application/json');
+      res.send(204);
+    });
+    form.parse(req);
+    res.set('Content-Type', 'application/json');
     res.send(204);
-    // work on this later to read fitbit subscription stuff
-    // var form = new multiparty.Form();
-    // form.on('error', next);
-    // form.on('part', function(part) {
-    //   part.on('data', function(chunk) {
-    //     console.log('got %d bytes of data, bitches.', chunk.length, chunk,chunk.toString());
-    //   });
-    // });
-    // // form.on('file', function(part, file) {
-    // //   console.log("FILE YXY", part, file);
-    // // });
-    // form.on('close', function(){
-    //   console.log('done');
-    //   res.set('Content-Type', 'application/json');
-    //   res.send(204);
-    // });
-    // form.parse(req);
   },
 
   retrieveData: function(req,res,next) {

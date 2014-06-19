@@ -7,6 +7,6 @@ module.exports = exports = function(router) {
     .get(controller.getSettings)
     .post(controller.post);
 
-  router.route('/:id')
+  router.route('/:platform')
     .get(controller.get);
 }
