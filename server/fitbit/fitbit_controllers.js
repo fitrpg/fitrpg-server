@@ -76,14 +76,12 @@ module.exports = exports = {
 
   pushNotification: function(req,res,next) {
 
-    console.log('request',req.body);
     var users = req.body;
     for (var j = 0; j < users.length; j++ ) {
       (function(i) {
         User.findByIdQ({_id:users[i].ownerId})
           .then(function(user) {
             user.needsUpdate = true;
-            console.log('user',user);
             return user;
           })
           .then(function(user) {
