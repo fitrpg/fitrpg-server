@@ -78,23 +78,34 @@ module.exports = exports = {
     // res.set('Content-Type', 'application/json');
     // res.send(204);
 
+    User.find()
+      .then(function(users) {
+        console.log('num users', users.length);
+        for (var i = 0; i<users.length;i++) {
+          exports.subscribeUser(user.accessToken,user.accessTokenSecret,user._id);
+        }
+      })
+      .fail(function(err) {
+        console.log(err);
+      })
+      .done();
     // work on this later to read fitbit subscription stuff
-    var form = new multiparty.Form();
-    form.on('error', next);
-    form.on('part', function(part) {
-      part.on('data', function(chunk) {
-        console.log('got %d bytes of data, bitches.', chunk.length, chunk,chunk.toString());
-      });
-    });
-    // form.on('file', function(part, file) {
-    //   console.log("FILE YXY", part, file);
+    // var form = new multiparty.Form();
+    // form.on('error', next);
+    // form.on('part', function(part) {
+    //   part.on('data', function(chunk) {
+    //     console.log('got %d bytes of data, bitches.', chunk.length, chunk,chunk.toString());
+    //   });
     // });
-    form.on('close', function(){
-      console.log('done');
-      res.set('Content-Type', 'application/json');
-      res.send(204);
-    });
-    form.parse(req);
+    // // form.on('file', function(part, file) {
+    // //   console.log("FILE YXY", part, file);
+    // // });
+    // form.on('close', function(){
+    //   console.log('done');
+    //   res.set('Content-Type', 'application/json');
+    //   res.send(204);
+    // });
+    // form.parse(req);
   },
 
   retrieveData: function(req,res,next) {
