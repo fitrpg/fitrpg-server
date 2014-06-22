@@ -59,5 +59,21 @@ module.exports = exports = {
       .fail(function (reason) {
         next(reason);
       });
+  },
+  getRandom: function(req,res,next) {
+    var id = req.params.id;
+    var level = req.params.level;
+    var lowerLimit = req.params.level-2 >= 1 ? req.params.level-2 : 1;
+    var upperLimit = req.params.level+2;
+    var $promise  = Q.nbind(User.find, User);
+    $promise({ _id: {'$ne': id}, 'attributes.level': {'$lte' : upperLimit , '$gte' : lowerLimit} } )
+      .then(function(users) {
+        var randomUser = users[Math.floor(Math.random()*users.length)];
+        res.json(randomUser);
+      })    
+      .fail(function (reason) {
+        next(reason);
+      })
   }
 };
+
