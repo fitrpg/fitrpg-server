@@ -8,6 +8,10 @@ module.exports = exports = function (router) {
     .post(controller.post)
     .put(controller.put);
 
+  // get the top 100 users
+  router.route('/leaderboard')
+  	.get(controller.getLeaderboard);
+
   router.route('/:id')
     .get(controller.get);
 
