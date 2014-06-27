@@ -25,7 +25,7 @@ module.exports = exports = function(router, passport) {
   router.route('/daterange/:id/:type/:activity/:startDate/:endDate')
     .get(controller.getActivitiesDateRange);
 
-  router.route('/timerange/:id/:activity/:startDate/:endDate/:startTime/:endTime')
+  router.route('/timerange/:id/:activity/:startDate/:startTime/:endTime')
     .get(controller.getActivitiesTimeRange);
 
   passport.use(controller.fitbitStrategy);
