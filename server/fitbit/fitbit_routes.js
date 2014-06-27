@@ -25,6 +25,11 @@ module.exports = exports = function(router, passport) {
   router.route('/daterange/:id/:type/:activity/:startDate/:endDate')
     .get(controller.getActivitiesDateRange);
 
+  /* BACKWARDS COMPATIBLE - KEEPING THIS ROUTE */
+  router.route('/timerange/:id/:activity/:startDate/:endDate/:startTime/:endTime')
+    .get(controller.getActivitiesTimeRange);
+
+  /* WORKING ROUTE FOR QUESTS THROUGH MIDNIGHT */
   router.route('/timerange/:id/:activity/:startDate/:startTime/:endTime')
     .get(controller.getActivitiesTimeRange);
 
