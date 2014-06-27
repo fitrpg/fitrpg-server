@@ -17,7 +17,6 @@ var mongoose = require('mongoose');
 var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
 var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
 
-
 var myClient = new FitbitApiClient(FITBIT_CONSUMER_KEY,FITBIT_CONSUMER_SECRET);
 
 var userId;
@@ -283,7 +282,7 @@ module.exports = exports = {
     var startTime = req.params.startTime;
     var endTime   = req.params.endTime;
     var qString   = 'activities-' + activity;
-    var url = '/activities/' + activity + '/date/' + startDate + '/' + endDate + '/15min/time/' + startTime + '/' + endTime + '.json';
+    var url = '/activities/' + activity + '/date/' + startDate + '/1d/15min/time/' + startTime + '/' + endTime + '.json';
     User.findByIdQ({_id: id})
       .then(function(user) {
         return client.requestResource(url, 'GET', user.accessToken, user.accessTokenSecret).then(function(results) {
