@@ -22,5 +22,8 @@ module.exports = exports = function (router) {
   // randomly gets a user that is within 2 levels of current user
   router.route('/random/:id/:level')
   	.get(controller.getRandom);
-      
+  
+  // search query through a regular expression
+  router.route('/search/:username')
+    .get(controller.searchUsername);
 };
