@@ -25,12 +25,13 @@ module.exports = exports = function(router, passport) {
   router.route('/daterange/:id/:type/:activity/:startDate/:endDate')
     .get(controller.getActivitiesDateRange);
 
-  /* BACKWARDS COMPATIBLE - KEEPING THIS ROUTE */
-  router.route('/timerange/:id/:activity/:startDate/:endDate/:startTime/:endTime')
+  
+  /* WORKING ROUTE FOR QUESTS THROUGH MIDNIGHT */
+  router.route('/new/timerange/:id/:activity/:startDate/:startTime/:endTime')
     .get(controller.getActivitiesTimeRange);
 
-  /* WORKING ROUTE FOR QUESTS THROUGH MIDNIGHT */
-  router.route('/timerange/:id/:activity/:startDate/:startTime/:endTime')
+  /* BACKWARDS COMPATIBLE - KEEPING THIS ROUTE */
+  router.route('/timerange/:id/:activity/:startDate/:endDate/:startTime/:endTime')
     .get(controller.getActivitiesTimeRange);
 
   passport.use(controller.fitbitStrategy);
