@@ -14,10 +14,9 @@ var format = require('util').format;
 
 var mongoose = require('mongoose');
 
-// var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
-// var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
-var FITBIT_CONSUMER_KEY = '8cda22173ee44a5bba066322ccd5ed34';
-var FITBIT_CONSUMER_SECRET = '12beae92a6da44bab17335de09843bc4';
+var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
+var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
+
 
 var myClient = new FitbitApiClient(FITBIT_CONSUMER_KEY,FITBIT_CONSUMER_SECRET);
 
