@@ -84,6 +84,17 @@ module.exports = exports = {
       .fail(function (reason) {
         next(reason);
       })
+  },
+  searchUsername: function(req,res,next) {
+    var searchQuery = new RegExp(req.params.username, 'i');
+    var $promise = Q.nbind(User.find, User);
+    $promise({ $or: [{ username: { $regex: searchQuery } }] })
+      .then(function(users) {
+        res.json(users);
+      })
+      .fail(function (reason) {
+        next(reason);
+      })
   }
 };
 
