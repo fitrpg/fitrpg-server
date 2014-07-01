@@ -6,7 +6,7 @@ var Q    = require('q');
 module.exports = exports = {
   get : function (req, res, next) {
     var $promise = Q.nbind(Quest.findById, Quest);
-    $promise(req.params.id)
+    $promise(req.params.id, null, {lean: true})
       .then(function (quest) {
         res.json(quest);
       })
@@ -16,7 +16,7 @@ module.exports = exports = {
   },
   getQuests : function (req, res, next) {
     var $promise = Q.nbind(Quest.find, Quest);
-    $promise()
+    $promise({}, null, {lean: true})
       .then(function (quests) {
         res.json(quests);
       })

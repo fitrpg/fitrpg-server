@@ -1,15 +1,23 @@
 'use strict';
 
-var bodyParser     = require('body-parser'),
-    cookieParser   = require('cookie-parser'),
-    middle         = require('./middleware'),
-    mongoose       = require('mongoose-q')(), //mongoose-q then requires mongoose
-    morgan         = require('morgan'),
-    methodOverride = require('method-override'),
-    session        = require('express-session'),
-    expressJwt     = require('express-jwt');
+var bodyParser         = require('body-parser'),
+    cookieParser       = require('cookie-parser'),
+    middle             = require('./middleware'),
+    mongoose           = require('mongoose-q')(), //mongoose-q then requires mongoose
+    morgan             = require('morgan'),
+    mongooseRedisCache = require("mongoose-redis-cache"),
+    methodOverride     = require('method-override'),
+    session            = require('express-session'),
+    expressJwt         = require('express-jwt');
 
 mongoose.connect(process.env.DB_URL || 'mongodb://localhost/fitApp');
+
+mongooseRedisCache(mongoose, {
+  host: process.env.REDIS_URL,
+  port: process.env.REDIS_PORT,
+  pass: process.env.REDIS_PASS
+});
+
 /*
  * Include all your global env variables here.
 */
