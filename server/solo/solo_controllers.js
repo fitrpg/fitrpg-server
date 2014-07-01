@@ -7,7 +7,7 @@ var url  = require('url');
 module.exports = exports = {
   get : function (req, res, next) {
     var $promise = Q.nbind(Solo.findById, Solo);
-    $promise(req.params.id)
+    $promise(req.params.id, null, {lean: true})
       .then(function (solo) {
         res.json(solo);
       })
@@ -19,7 +19,7 @@ module.exports = exports = {
     var $promise = Q.nbind(Solo.find, Solo);
     var url_parts = url.parse(req.url, true);
     var query = url_parts.query;
-    $promise(query)
+    $promise(query, null, {lean: true})
       .then(function (solos) {
         res.json(solos);
       })
