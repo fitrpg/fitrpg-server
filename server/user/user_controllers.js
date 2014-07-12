@@ -75,15 +75,18 @@ module.exports = exports = {
         next(reason);
       })
   },
+  // getLeaderboard: function(req,res,next) {
+  //   var $promise = Q.nbind(User.find,User);
+  //   $promise({ $query: {}, $orderby: { 'attributes.level' : -1 } })
+  //     .then(function(users) {
+  //       res.json(users.slice(0,100));
+  //     })
+  //     .fail(function (reason) {
+  //       next(reason);
+  //     })a
+  // },
   getLeaderboard: function(req,res,next) {
-    var $promise = Q.nbind(User.find,User);
-    $promise({ $query: {}, $orderby: { 'attributes.level' : -1 } })
-      .then(function(users) {
-        res.json(users.slice(0,100));
-      })
-      .fail(function (reason) {
-        next(reason);
-      })
+    res.json([]);
   },
   searchUsername: function(req,res,next) {
     var searchQuery = new RegExp(req.params.username, 'i');
