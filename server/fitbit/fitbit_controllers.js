@@ -7,6 +7,7 @@ var jwt = require('jsonwebtoken');
 var Q = require("q");
 var utils = require('./fitbit_utility.js').util;
 var fitIds = require('./fitbit_activity_ids.js');
+var path = require('path');
 
 // For processing Fitbit's push notification in the format of multipart/form (not bodyparsed :\)
 var multiparty = require('multiparty');
@@ -96,6 +97,16 @@ module.exports = exports = {
     
     res.set('Content-Type', 'application/json');
     res.send(204);
+  },
+
+  // typically, this window should never be seen and just automatically closed,
+  // but in the cases where the closing window doesn't work, this provides a manual way to do itd
+  finishLogin: function(req,res,next) {
+    if (req.query['oauth_token'] && req.query['userId']) {
+      res.sendfile(path.resolve('./static/loggedIn.html'));
+    } else {
+      next();
+    }
   },
 
   retrieveData: function(req,res,next) {
