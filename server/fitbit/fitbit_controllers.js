@@ -124,7 +124,6 @@ module.exports = exports = {
           user.accessTokenSecret = tokenSecret;
         }
         dateCreated = user.createdAt.subtractDays(1).yyyymmdd(); // to make up for time zone mixing up, this is a buffer
-        console.log('test', dateCreated);
         user.lastActive = user.lastActive || new Date(); //if new date this means they are a first time user
         // GET PROFILE DATA
         return client.requestResource('/profile.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
