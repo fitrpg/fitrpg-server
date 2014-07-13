@@ -18,7 +18,6 @@ var mongoose = require('mongoose');
 var FITBIT_CONSUMER_KEY = process.env.FITBIT_CONSUMER_KEY;
 var FITBIT_CONSUMER_SECRET = process.env.FITBIT_CONSUMER_SECRET;
 
-
 var myClient = new FitbitApiClient(FITBIT_CONSUMER_KEY,FITBIT_CONSUMER_SECRET);
 
 var userId;
@@ -124,7 +123,7 @@ module.exports = exports = {
           user.accessToken = token;
           user.accessTokenSecret = tokenSecret;
         }
-        dateCreated = user.createdAt.yyyymmdd();
+        dateCreated = user.createdAt.subtractDays(1).yyyymmdd(); // to make up for time zone mixing up, this is a buffer
         user.lastActive = user.lastActive || new Date(); //if new date this means they are a first time user
         // GET PROFILE DATA
         return client.requestResource('/profile.json','GET',user.accessToken,user.accessTokenSecret).then(function(results){
