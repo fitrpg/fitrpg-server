@@ -9,7 +9,7 @@
   "dependencies": {
     "body-parser": "*",
     "cookie-parser": "^1.1.0",
-    "envs": "^0.1.6",
+    "dotenv": "^1.2.0",
     "express": "*",
     "express-jwt": "^0.2.1",
     "express-session": "^1.2.0",
