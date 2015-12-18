@@ -1,5 +1,6 @@
 "use strict";
 
+var env = require('dotenv').load();
 var User = require('../user/user_model.js');
 var FitbitStrategy = require('./fitbit-passport.js');
 var FitbitApiClient = require('fitbit-node');
@@ -93,7 +94,7 @@ module.exports = exports = {
           .done();
       }(j));
     }
-    
+
     res.set('Content-Type', 'application/json');
     res.send(204);
   },
@@ -199,8 +200,8 @@ module.exports = exports = {
         if (hpLastChecked === today && HPChecker.foundSleep === true) {
           return user;
         }
-        user.HPChecker.dateLastChecked = new Date(); //set the new lastchecked date to today 
-        var hpURL = '/sleep/minutesAsleep/date/'+hpLastChecked+'/today.json'; 
+        user.HPChecker.dateLastChecked = new Date(); //set the new lastchecked date to today
+        var hpURL = '/sleep/minutesAsleep/date/'+hpLastChecked+'/today.json';
         return client.requestResource(hpURL,'GET',user.accessToken,user.accessTokenSecret).then(function(results){
           user.fitbit.HPRecov = utils.calcHpRecov(JSON.parse(results[0])['sleep-minutesAsleep']);
           if (user.fitbit.HPRecov > 0) {
