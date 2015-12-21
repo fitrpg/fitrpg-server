@@ -12,7 +12,7 @@ FitRPG is a mobile app created by [Amira Anuar](https://github.com/aellawind), [
   * [AngularJS](https://angularjs.org/)
   * [Node.js](http://nodejs.org/)
   * [Express.js](http://expressjs.com/)
-  * [MongoDB](http://www.mongodb.org/) 
+  * [MongoDB](http://www.mongodb.org/)
 
 <h2>Code Base</h2>
   * [Client side](https://github.com/fitrpg/fitrpg-ionic)
@@ -24,7 +24,7 @@ FitRPG is a mobile app created by [Amira Anuar](https://github.com/aellawind), [
   * Game logic design
     * Balancing how sleep, steps and other activities relate to the characters attributes and making sure one is not more effective than other attributes.
   * User interface design
-    * A game can have a lot of different options and views, reducing and compressing these views and making them innutaive is a challenge.
+    * A game can have a lot of different options and views, reducing and compressing these views and making them intuitive is a challenge.
   * Security
-    * Implemnting json web tokens
+    * Implementing json web tokens
     * OAuth
